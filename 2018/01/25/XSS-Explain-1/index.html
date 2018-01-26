@@ -3,17 +3,25 @@
 <head>
   <meta charset="utf-8">
   
-  <title>C0d3r1iu&#39;s Blog</title>
+  <title>XSS跨站脚本攻击探讨总结 | C0d3r1iu&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Keep Foolish">
-<meta property="og:type" content="website">
-<meta property="og:title" content="C0d3r1iu&#39;s Blog">
-<meta property="og:url" content="http://c0der1iu.github.io/index.html">
+  <meta name="description" content="XSS 跨站脚本攻击漏洞 个人整理12整体篇幅比较长，也算是我自己学习道路上的总结。大家捡有用的看吧，尽可能屎里捞金，还望多多支持我心血来潮的产物~ 一.攻击原理：设计网页时没有对用户输入内容进行有效的过滤，导致用户恶意输入的符号对现有html代码造成闭合，从而加载外部js代码对浏览者进行恶意攻击（获取cookie伪造登录，浏览器截屏，url跳转等等） 比如网页有一功能：某标签内的value引用一">
+<meta name="keywords" content="XSS 跨站脚本攻击">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XSS跨站脚本攻击探讨总结">
+<meta property="og:url" content="http://c0der1iu.github.io/2018/01/25/XSS-Explain-1/index.html">
 <meta property="og:site_name" content="C0d3r1iu&#39;s Blog">
-<meta property="og:description" content="Keep Foolish">
+<meta property="og:description" content="XSS 跨站脚本攻击漏洞 个人整理12整体篇幅比较长，也算是我自己学习道路上的总结。大家捡有用的看吧，尽可能屎里捞金，还望多多支持我心血来潮的产物~ 一.攻击原理：设计网页时没有对用户输入内容进行有效的过滤，导致用户恶意输入的符号对现有html代码造成闭合，从而加载外部js代码对浏览者进行恶意攻击（获取cookie伪造登录，浏览器截屏，url跳转等等） 比如网页有一功能：某标签内的value引用一">
+<meta property="og:image" content="http://c0der1iu.github.io/2018/01/25/XSS-Explain-1/xss.png">
+<meta property="og:image" content="http://c0der1iu.github.io/2018/01/25/XSS-Explain-1/svg.png">
+<meta property="og:image" content="http://c0der1iu.github.io/2018/01/25/XSS-Explain-1/csp.png">
+<meta property="og:image" content="http://c0der1iu.github.io/2018/01/25/XSS-Explain-1/csp3.png">
+<meta property="og:image" content="http://c0der1iu.github.io/2018/01/25/XSS-Explain-1/csp2.png">
+<meta property="og:updated_time" content="2018-01-26T05:17:38.491Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="C0d3r1iu&#39;s Blog">
-<meta name="twitter:description" content="Keep Foolish">
+<meta name="twitter:title" content="XSS跨站脚本攻击探讨总结">
+<meta name="twitter:description" content="XSS 跨站脚本攻击漏洞 个人整理12整体篇幅比较长，也算是我自己学习道路上的总结。大家捡有用的看吧，尽可能屎里捞金，还望多多支持我心血来潮的产物~ 一.攻击原理：设计网页时没有对用户输入内容进行有效的过滤，导致用户恶意输入的符号对现有html代码造成闭合，从而加载外部js代码对浏览者进行恶意攻击（获取cookie伪造登录，浏览器截屏，url跳转等等） 比如网页有一功能：某标签内的value引用一">
+<meta name="twitter:image" content="http://c0der1iu.github.io/2018/01/25/XSS-Explain-1/xss.png">
   
     <link rel="alternate" href="/atom.xml" title="C0d3r1iu&#39;s Blog" type="application/atom+xml">
   
@@ -66,9 +74,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-XSS-Explain-1" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-XSS-Explain-1" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/01/25/XSS-Explain-1/" class="article-date">
   <time datetime="2018-01-25T05:29:22.000Z" itemprop="datePublished">2018-01-25</time>
@@ -81,8 +87,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/01/25/XSS-Explain-1/">XSS跨站脚本攻击探讨总结</a>
+    <h1 class="article-title" itemprop="name">
+      XSS跨站脚本攻击探讨总结
     </h1>
   
 
@@ -190,48 +196,19 @@
     </footer>
   </div>
   
-</article>
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/01/25/hello-world/" class="article-date">
-  <time datetime="2018-01-24T17:03:38.350Z" itemprop="datePublished">2018-01-25</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/01/25/hello-world/">Hello World</a>
-    </h1>
+    <a href="/2018/01/25/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hello World</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>折腾了一整天，才把这新鲜的 “静态博客” 搭建好，期间经历的艰难困苦想必是大家无法想象的。</p>
-<p>因为某些原因，我这里github和CSDN是不能访问的，在linux下克服这个问题，我用了proxychains4 这款神器，搭配“瑞士军刀” —— shadowsocks ，搞了个好点的vpn才算是解决了，然而解决之时，正好也是日落之时，这一天又这样悄悄的过去了。</p>
-<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span> <span class="string">'生活是屎一样的三明治，饥饿的你不得不去面对它！'</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://c0der1iu.github.io/2018/01/25/hello-world/" data-id="cjcvh840p0001iijxp3kncsfn" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
   
 </article>
-
-
-  
 
 </section>
         
