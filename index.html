@@ -169,20 +169,9 @@
         <h1 id="倚天屠龙Docker部署记"><a href="#倚天屠龙Docker部署记" class="headerlink" title="倚天屠龙Docker部署记"></a>倚天屠龙Docker部署记</h1><p>很久以前就听@LYZ说过Docker,最近要办HITCTF了才想起来要学习，记录一下环境的部署</p>
 <h3 id="采用环境："><a href="#采用环境：" class="headerlink" title="采用环境："></a>采用环境：</h3><h5 id="腾讯云VPS-ubuntu16-04-MobaXtern-SSH管理工具"><a href="#腾讯云VPS-ubuntu16-04-MobaXtern-SSH管理工具" class="headerlink" title="腾讯云VPS(ubuntu16.04) + MobaXtern(SSH管理工具)"></a>腾讯云VPS(ubuntu16.04) + MobaXtern(SSH管理工具)</h5><p>首先贴一份docker安装脚本，保存为docker.sh传到服务器上，sudo运行</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">sudo apt-get -y update &amp;&amp; apt -y upgrade</span><br><span class="line">sudo apt-get -y install apt-transport-https ca-certificates curl software-properties-common</span><br><span class="line"><span class="comment">#添加Docker官方GPG公钥</span></span><br><span class="line">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -</span><br><span class="line">sudo add-apt-repository \</span><br><span class="line">   <span class="string">"deb [arch=amd64] https://download.docker.com/linux/ubuntu <span class="variable">$(lsb_release -cs)</span> edge"</span></span><br><span class="line">sudo apt-get -y update</span><br><span class="line">sudo apt-get -y install docker-ce</span><br><span class="line">curl -L https://github.com/docker/compose/releases/download/1.18.0/docker-compose-`uname -s`-`uname -m` -o /usr/<span class="built_in">local</span>/bin/docker-compose</span><br><span class="line">chmod +x /usr/<span class="built_in">local</span>/bin/docker-compose</span><br></pre></td></tr></table></figure>
-<p>接着出现一系列更新，都敲回车一路过来，直到完成,输入docker -v 查看版本</p>
-<p>如果回显正常那么恭喜你docker环境配置完成了</p>
-<p><img src="/2018/01/26/Hello-Docker/install.png" alt=""></p>
-<h4 id="一些配置时用到的基本命令-使用前请加sudo-："><a href="#一些配置时用到的基本命令-使用前请加sudo-：" class="headerlink" title="一些配置时用到的基本命令(使用前请加sudo)："></a>一些配置时用到的基本命令(使用前请加sudo)：</h4><h5 id="查看镜像"><a href="#查看镜像" class="headerlink" title="查看镜像"></a>查看镜像</h5><p><code>docker images ls</code></p>
-<h5 id="查看容器"><a href="#查看容器" class="headerlink" title="查看容器"></a>查看容器</h5><p><code>docker container ls</code></p>
-<h5 id="停止运行的容器"><a href="#停止运行的容器" class="headerlink" title="停止运行的容器"></a>停止运行的容器</h5><p><code>docker stop id</code></p>
-<h5 id="移除容器"><a href="#移除容器" class="headerlink" title="移除容器"></a>移除容器</h5><p><code>docker rm id</code></p>
-<p><img src="/2018/01/26/Hello-Docker/install2.png" alt=""></p>
-<h5 id="远程获取ubuntu16-04"><a href="#远程获取ubuntu16-04" class="headerlink" title="远程获取ubuntu16.04"></a>远程获取ubuntu16.04</h5><p><code>docker pull ubuntu:16.04</code></p>
-<h5 id="从本地的dockerfile启动容器"><a href="#从本地的dockerfile启动容器" class="headerlink" title="从本地的dockerfile启动容器"></a>从本地的dockerfile启动容器</h5><p><code>docker-compose -f local_db.yml up -d --build</code></p>
-<h5 id="获取当前容器运行日志"><a href="#获取当前容器运行日志" class="headerlink" title="获取当前容器运行日志"></a>获取当前容器运行日志</h5><p><code>docker-compose -f 配置文件 logs --tail all</code></p>
-<h5 id="docker跑起来时，暂停-恢复："><a href="#docker跑起来时，暂停-恢复：" class="headerlink" title="docker跑起来时，暂停/恢复："></a>docker跑起来时，暂停/恢复：</h5><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker pause <span class="built_in">id</span></span><br><span class="line">docker unpause <span class="built_in">id</span></span><br></pre></td></tr></table></figure>
-<h4 id="值得注意："><a href="#值得注意：" class="headerlink" title="值得注意："></a>值得注意：</h4><p>当你有一个容器在跑mysql服务，将3306端口映射到主机上时，再启动一个容器就要小心端口占用的问题了。</p>
-
+        
+          <a class="article-more-a" href="/2018/01/26/Hello-Docker/#more">more >></a>
+        
       
 
       
