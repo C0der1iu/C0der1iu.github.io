@@ -6,18 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://c0der1iu.github.io">
-  <title>WinterVacation | C0d3r1iu&#39;s Blog</title>
+  <title>网易图片解析为html漏洞复现 | C0d3r1iu&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Keep Foolish">
+  <meta name="description" content="昨天看到吐司上面有人发了篇帖子，大概讲的是 楼主发现了搜狗和网易有某种漏洞，上传的图片可以解析图片文件中夹带的js代码 果然吐司大牛如云，下面马上就有人回帖贴出了一个网易的地址，打开就弹窗了。。。 于是看着大家的讨论，自己也复现了一波：  测试复现地址">
+<meta name="keywords" content="漏洞复现">
 <meta property="og:type" content="article">
-<meta property="og:title" content="WinterVacation">
-<meta property="og:url" content="http://c0der1iu.github.io/2018/02/21/WinterVacation/index.html">
+<meta property="og:title" content="网易图片解析为html漏洞复现">
+<meta property="og:url" content="http://c0der1iu.github.io/2018/02/28/neteast-jpg-react/index.html">
 <meta property="og:site_name" content="C0d3r1iu&#39;s Blog">
-<meta property="og:description" content="Keep Foolish">
-<meta property="og:updated_time" content="2018-02-21T06:35:12.503Z">
+<meta property="og:description" content="昨天看到吐司上面有人发了篇帖子，大概讲的是 楼主发现了搜狗和网易有某种漏洞，上传的图片可以解析图片文件中夹带的js代码 果然吐司大牛如云，下面马上就有人回帖贴出了一个网易的地址，打开就弹窗了。。。 于是看着大家的讨论，自己也复现了一波：  测试复现地址">
+<meta property="og:image" content="http://c0der1iu.github.io/2018/02/28/neteast-jpg-react/163alert.png">
+<meta property="og:updated_time" content="2018-02-28T14:18:15.632Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="WinterVacation">
-<meta name="twitter:description" content="Keep Foolish">
+<meta name="twitter:title" content="网易图片解析为html漏洞复现">
+<meta name="twitter:description" content="昨天看到吐司上面有人发了篇帖子，大概讲的是 楼主发现了搜狗和网易有某种漏洞，上传的图片可以解析图片文件中夹带的js代码 果然吐司大牛如云，下面马上就有人回帖贴出了一个网易的地址，打开就弹窗了。。。 于是看着大家的讨论，自己也复现了一波：  测试复现地址">
+<meta name="twitter:image" content="http://c0der1iu.github.io/2018/02/28/neteast-jpg-react/163alert.png">
   
   
     <link rel="icon" href="/faction/head.jpg">
@@ -145,27 +148,42 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-WinterVacation" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-neteast-jpg-react" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      WinterVacation
+      网易图片解析为html漏洞复现
     </h1>
   
 
         
-        <a href="/2018/02/21/WinterVacation/" class="archive-article-date">
-  	<time datetime="2018-02-21T06:35:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-21</time>
+        <a href="/2018/02/28/neteast-jpg-react/" class="archive-article-date">
+  	<time datetime="2018-02-28T13:44:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-28</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>昨天看到吐司上面有人发了篇帖子，大概讲的是 楼主发现了搜狗和网易有某种漏洞，上传的图片可以解析图片文件中夹带的js代码</p>
+<p>果然吐司大牛如云，下面马上就有人回帖贴出了一个网易的地址，打开就弹窗了。。。</p>
+<p>于是看着大家的讨论，自己也复现了一波：</p>
+<p><img src="/2018/02/28/neteast-jpg-react/163alert.png" alt=""></p>
+<p><a href="http://hi-163-common.nosdn.127.net/upload/201802/28/a47399601c7911e8ae21717dc0d1d8bd" target="_blank" rel="noopener">测试复现地址</a></p>
+<a id="more"></a>
+<p>首先去网易某分站注册，找到上传图片的入口，打开burp抓包</p>
+<p>新建一个文件，输入html代码保存为图片格式并上传</p>
+<p>将<code>Content-type:text/plain</code>修改成<code>Content-type:text/html</code></p>
+<p>这样浏览器在识别这样的文件后会调用html解析器对文件进行解析</p>
+<p>整理一下相关知识吧：</p>
+<h5 id="Content-Type"><a href="#Content-Type" class="headerlink" title="Content-Type"></a>Content-Type</h5><p> MediaType，即是Internet Media Type，互联网媒体类型；也叫做MIME类型，在Http协议消息头中，使用Content-Type来表示具体请求中的媒体类型信息。<br> Content-type 告诉用户浏览器如何显示或者解析将要加载的数据文件</p>
+<h5 id="常见的媒体格式类型如下："><a href="#常见的媒体格式类型如下：" class="headerlink" title="常见的媒体格式类型如下："></a>常见的媒体格式类型如下：</h5><figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">text</span>/html ： HTML格式</span><br><span class="line"><span class="built_in">text</span>/plain ：纯文本格式     </span><br><span class="line"><span class="built_in">text</span>/xml ：  <span class="keyword">XML</span>格式</span><br><span class="line"><span class="built_in">image</span>/gif ：gif图片格式   </span><br><span class="line"><span class="built_in">image</span>/jpeg ：jpg图片格式</span><br><span class="line"><span class="built_in">image</span>/png：png图片格式</span><br></pre></td></tr></table></figure>
+<p>一些小伙伴叫这个 ‘xss’，而我感觉这更像是文件上传缺陷。</p>
+<p>涉及的危害我想包括但不限于: 群发广告(毕竟是大站的域名，应该自带白名单)，钓鱼诈骗，剩下的盗取cookie什么的如果开启了http-only,同源策略，内容安全策略限制的好应该很难利用吧233。</p>
+
       
 
       
@@ -173,6 +191,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞复现</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -186,18 +215,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2018/02/28/neteast-jpg-react/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          网易图片解析为html漏洞复现
-        
-      </div>
-    </a>
   
-  
-    <a href="/2018/02/15/HappyNewYear/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">HappyNewYear</div>
+    <a href="/2018/02/21/WinterVacation/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">WinterVacation</div>
       <i class="icon-circle-right"></i>
     </a>
   
