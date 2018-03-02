@@ -6,17 +6,24 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://c0der1iu.github.io">
-  <title>Archives: 2018/2 | C0d3r1iu&#39;s Blog</title>
+  <title>初审cmseasy之 基本解混淆 | C0d3r1iu&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Keep Foolish">
-<meta property="og:type" content="website">
-<meta property="og:title" content="C0d3r1iu&#39;s Blog">
-<meta property="og:url" content="http://c0der1iu.github.io/archives/2018/02/index.html">
+  <meta name="description" content="看了一下lib目录下所有代码都是被混淆过了，可能是开发人员想过滤掉初级无脑扫描分析工具吧 不解密的话代码都看不到，不知道解密完了能不能发现一些好玩的东西。  分析混淆代码不难发现，每一个文件后面都是加密的原始源码 经过层层替换： 1234567&amp;lt;?php$o00o=$file_get_contents(__FILE__);$o00o=substr(str_replace(substr($o0">
+<meta property="og:type" content="article">
+<meta property="og:title" content="初审cmseasy之 基本解混淆">
+<meta property="og:url" content="http://c0der1iu.github.io/2018/03/02/cmseasy01/index.html">
 <meta property="og:site_name" content="C0d3r1iu&#39;s Blog">
-<meta property="og:description" content="Keep Foolish">
+<meta property="og:description" content="看了一下lib目录下所有代码都是被混淆过了，可能是开发人员想过滤掉初级无脑扫描分析工具吧 不解密的话代码都看不到，不知道解密完了能不能发现一些好玩的东西。  分析混淆代码不难发现，每一个文件后面都是加密的原始源码 经过层层替换： 1234567&amp;lt;?php$o00o=$file_get_contents(__FILE__);$o00o=substr(str_replace(substr($o0">
+<meta property="og:image" content="http://c0der1iu.github.io/2018/03/02/cmseasy01/1.png">
+<meta property="og:image" content="http://c0der1iu.github.io/2018/03/02/cmseasy01/2.png">
+<meta property="og:image" content="http://c0der1iu.github.io/2018/03/02/cmseasy01/3.png">
+<meta property="og:image" content="http://c0der1iu.github.io/2018/03/02/cmseasy01/4.png">
+<meta property="og:image" content="http://c0der1iu.github.io/2018/03/02/cmseasy01/5.png">
+<meta property="og:updated_time" content="2018-03-02T09:06:41.528Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="C0d3r1iu&#39;s Blog">
-<meta name="twitter:description" content="Keep Foolish">
+<meta name="twitter:title" content="初审cmseasy之 基本解混淆">
+<meta name="twitter:description" content="看了一下lib目录下所有代码都是被混淆过了，可能是开发人员想过滤掉初级无脑扫描分析工具吧 不解密的话代码都看不到，不知道解密完了能不能发现一些好玩的东西。  分析混淆代码不难发现，每一个文件后面都是加密的原始源码 经过层层替换： 1234567&amp;lt;?php$o00o=$file_get_contents(__FILE__);$o00o=substr(str_replace(substr($o0">
+<meta name="twitter:image" content="http://c0der1iu.github.io/2018/03/02/cmseasy01/1.png">
   
   
     <link rel="icon" href="/faction/head.jpg">
@@ -144,87 +151,104 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-cmseasy01" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/02/28/neteast-jpg-react/" class="archive-article-date">
-  	<time datetime="2018-02-28T13:44:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-28</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/02/28/neteast-jpg-react/">网易图片解析为html漏洞复现</a>
+    <h1 class="article-title" itemprop="name">
+      初审cmseasy之 基本解混淆
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞复现</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/02/15/HappyNewYear/" class="archive-article-date">
-  	<time datetime="2018-02-15T10:52:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-15</time>
+        
+        <a href="/2018/03/02/cmseasy01/" class="archive-article-date">
+  	<time datetime="2018-03-02T09:04:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-02</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/02/15/HappyNewYear/">HappyNewYear</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>看了一下lib目录下所有代码都是被混淆过了，可能是开发人员想过滤掉初级无脑扫描分析工具吧</p>
+<p>不解密的话代码都看不到，不知道解密完了能不能发现一些好玩的东西。</p>
+<p><img src="/2018/03/02/cmseasy01/1.png" alt=""></p>
+<p>分析混淆代码不难发现，每一个文件后面都是加密的原始源码</p>
+<p>经过层层替换：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="php"></span></span><br><span class="line"><span class="php">$o00o=$file_get_contents(<span class="keyword">__FILE__</span>);</span></span><br><span class="line"><span class="php"></span></span><br><span class="line"><span class="php">$o00o=substr(str_replace(substr($o00o,<span class="number">0</span>,<span class="number">2054</span>),<span class="string">''</span>,$o00o),<span class="number">0</span>,<span class="number">-2</span>);</span></span><br><span class="line"><span class="php"></span></span><br><span class="line"><span class="php"><span class="keyword">eval</span>(gzinflate(base64_decode($o00o)));</span></span><br></pre></td></tr></table></figure>
+<p>此时可以看到，这段代码的含义是读取自身文件，并且将前面2054个字符和最后2个（注释符）替换掉，从而得到gzinflate(base64_encode)的字符串</p>
+<p>并且通过eval(解密) 进行执行,化简完的代码:</p>
+<p><img src="/2018/03/02/cmseasy01/2.png" alt=""></p>
+<p>还原后可以进一步查看能否在eval函数中搞一点事情</p>
+<p>按它给的方法进行文件内容处理</p>
+<p>之后再把执行的函数换成echo，这个时候就可以迈过这个坎儿，进行下一步的审计了。</p>
+<p>用php写个脚本跑了单个文件，成功了，随后可以批量解密，这个时候py脚本还得调用php,就不如直接撸php脚本解密快了。</p>
+<p><img src="/2018/03/02/cmseasy01/3.png" alt=""><br><img src="/2018/03/02/cmseasy01/4.png" alt=""></p>
+<p>最终批量检测还原代码效果(自动遍历文件并检测解密)：</p>
+<p>test.php</p>
+<p><img src="/2018/03/02/cmseasy01/5.png" alt=""></p>
+<p>天呐，终于完善了这个无聊之作，解密脚本就不发了，练习php之作比较笨拙</p>
+<hr>
+<p>最后附上解密代码：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="php">$content=file_get_contents(<span class="string">'1.txt'</span>);</span></span><br><span class="line"><span class="php">$next=substr(str_replace(substr($content,<span class="number">0</span>,<span class="number">2054</span>),<span class="string">''</span>,$content),<span class="number">0</span>,<span class="number">-2</span>);</span></span><br><span class="line"><span class="php">$content=gzinflate(base64_decode($next));</span></span><br><span class="line"><span class="php">file_put_contents(<span class="string">'1.txt'</span>,$content);</span></span><br><span class="line"><span class="php"><span class="meta">?&gt;</span></span></span><br></pre></td></tr></table></figure>
+<h4 id="总结：不要死认准一种语言coding，有时候php比py好用得多"><a href="#总结：不要死认准一种语言coding，有时候php比py好用得多" class="headerlink" title="总结：不要死认准一种语言coding，有时候php比py好用得多"></a>总结：不要死认准一种语言coding，有时候php比py好用得多</h4>
+      
 
-        <div class="article-info info-on-right">
-          
-          
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2018/02/28/neteast-jpg-react/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">网易图片解析为html漏洞复现</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -249,8 +273,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
