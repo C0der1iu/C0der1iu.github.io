@@ -8,21 +8,21 @@
   <link rel="dns-prefetch" href="http://c0der1iu.github.io">
   <title>初审cmseasy之 基本解混淆 | C0d3r1iu&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="看了一下lib目录下所有代码都是被混淆过了，可能是开发人员想过滤掉初级无脑扫描分析工具吧 不解密的话代码都看不到，不知道解密完了能不能发现一些好玩的东西。  分析混淆代码不难发现，每一个文件后面都是加密的原始源码 经过层层替换： 1234567&amp;lt;?php$o00o=$file_get_contents(__FILE__);$o00o=substr(str_replace(substr($o0">
+  <meta name="description" content="看了一下lib目录下所有代码都是被混淆过了，可能是开发人员想过滤掉初级无脑扫描分析工具吧 不解密的话代码都看不到，不知道解密完了能不能发现一些好玩的东西。  分析混淆代码不难发现，每一个文件后面都是加密的原始源码">
 <meta property="og:type" content="article">
 <meta property="og:title" content="初审cmseasy之 基本解混淆">
 <meta property="og:url" content="http://c0der1iu.github.io/2018/03/02/cmseasy01/index.html">
 <meta property="og:site_name" content="C0d3r1iu&#39;s Blog">
-<meta property="og:description" content="看了一下lib目录下所有代码都是被混淆过了，可能是开发人员想过滤掉初级无脑扫描分析工具吧 不解密的话代码都看不到，不知道解密完了能不能发现一些好玩的东西。  分析混淆代码不难发现，每一个文件后面都是加密的原始源码 经过层层替换： 1234567&amp;lt;?php$o00o=$file_get_contents(__FILE__);$o00o=substr(str_replace(substr($o0">
+<meta property="og:description" content="看了一下lib目录下所有代码都是被混淆过了，可能是开发人员想过滤掉初级无脑扫描分析工具吧 不解密的话代码都看不到，不知道解密完了能不能发现一些好玩的东西。  分析混淆代码不难发现，每一个文件后面都是加密的原始源码">
 <meta property="og:image" content="http://c0der1iu.github.io/2018/03/02/cmseasy01/1.png">
 <meta property="og:image" content="http://c0der1iu.github.io/2018/03/02/cmseasy01/2.png">
 <meta property="og:image" content="http://c0der1iu.github.io/2018/03/02/cmseasy01/3.png">
 <meta property="og:image" content="http://c0der1iu.github.io/2018/03/02/cmseasy01/4.png">
 <meta property="og:image" content="http://c0der1iu.github.io/2018/03/02/cmseasy01/5.png">
-<meta property="og:updated_time" content="2018-03-02T09:06:41.528Z">
+<meta property="og:updated_time" content="2018-03-02T09:08:27.784Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="初审cmseasy之 基本解混淆">
-<meta name="twitter:description" content="看了一下lib目录下所有代码都是被混淆过了，可能是开发人员想过滤掉初级无脑扫描分析工具吧 不解密的话代码都看不到，不知道解密完了能不能发现一些好玩的东西。  分析混淆代码不难发现，每一个文件后面都是加密的原始源码 经过层层替换： 1234567&amp;lt;?php$o00o=$file_get_contents(__FILE__);$o00o=substr(str_replace(substr($o0">
+<meta name="twitter:description" content="看了一下lib目录下所有代码都是被混淆过了，可能是开发人员想过滤掉初级无脑扫描分析工具吧 不解密的话代码都看不到，不知道解密完了能不能发现一些好玩的东西。  分析混淆代码不难发现，每一个文件后面都是加密的原始源码">
 <meta name="twitter:image" content="http://c0der1iu.github.io/2018/03/02/cmseasy01/1.png">
   
   
@@ -175,6 +175,7 @@
 <p>不解密的话代码都看不到，不知道解密完了能不能发现一些好玩的东西。</p>
 <p><img src="/2018/03/02/cmseasy01/1.png" alt=""></p>
 <p>分析混淆代码不难发现，每一个文件后面都是加密的原始源码</p>
+<a id="more"></a>
 <p>经过层层替换：</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="php"></span></span><br><span class="line"><span class="php">$o00o=$file_get_contents(<span class="keyword">__FILE__</span>);</span></span><br><span class="line"><span class="php"></span></span><br><span class="line"><span class="php">$o00o=substr(str_replace(substr($o00o,<span class="number">0</span>,<span class="number">2054</span>),<span class="string">''</span>,$o00o),<span class="number">0</span>,<span class="number">-2</span>);</span></span><br><span class="line"><span class="php"></span></span><br><span class="line"><span class="php"><span class="keyword">eval</span>(gzinflate(base64_decode($o00o)));</span></span><br></pre></td></tr></table></figure>
 <p>此时可以看到，这段代码的含义是读取自身文件，并且将前面2054个字符和最后2个（注释符）替换掉，从而得到gzinflate(base64_encode)的字符串</p>
