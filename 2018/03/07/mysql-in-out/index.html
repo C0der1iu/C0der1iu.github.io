@@ -18,7 +18,7 @@
 <meta property="og:image" content="http://c0der1iu.github.io/2018/03/07/mysql-in-out/navicate.png">
 <meta property="og:image" content="http://c0der1iu.github.io/2018/03/07/mysql-in-out/navicate3.png">
 <meta property="og:image" content="http://c0der1iu.github.io/2018/03/07/mysql-in-out/navicate2.png">
-<meta property="og:updated_time" content="2018-03-07T12:49:32.797Z">
+<meta property="og:updated_time" content="2018-03-07T12:51:32.631Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="记录数据库导出导入神操作">
 <meta name="twitter:description" content="今儿实验室分配了一个艰巨的任务： 在一台主机内存严重不足的虚拟主机中对数据库里面储存的文章内容打标签(简单来说就是IO操作)我是负责甄别内容是否涉及技术的，同时有一学姐负责分析文章内容具体属于的领域。 一开始跑脚本，悲剧就开始了，woc根本跑不动啊。 本地测试的时候一秒钟都能跑十来条。 后来关了几台虚拟机还是没什么效果，机智的我就想到了先把库导出来，导入到本地机器的mysql中跑脚本，跑完之后再导">
@@ -176,6 +176,7 @@
 <p>本地测试的时候一秒钟都能跑十来条。</p>
 <p>后来关了几台虚拟机还是没什么效果，机智的我就想到了先把库导出来，导入到本地机器的mysql中跑脚本，跑完之后再导回去。</p>
 <p><img src="/2018/03/07/mysql-in-out/pdd.jpg" alt=""></p>
+<a id="more"></a>
 <p>然后主要矛盾终于被突出了，不管用navicate导出为什么格式的文件，再导入都会出错，20w数据能损失80%多…</p>
 <p>重复了几遍都不行，字段怎么都建立不对。</p>
 <p>后来突发奇想，用navicate连接本地机器的数据库，建立一个同名的数据库，直接图形界面用鼠标把服务器上的表拖过去</p>
