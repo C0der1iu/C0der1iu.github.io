@@ -146,6 +146,81 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-mysql-in-out" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/03/07/mysql-in-out/">记录数据库导出导入神操作</a>
+    </h1>
+  
+
+        
+        <a href="/2018/03/07/mysql-in-out/" class="archive-article-date">
+  	<time datetime="2018-03-07T12:02:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-07</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>今儿实验室分配了一个艰巨的任务：</p>
+<h4 id="在一台主机内存严重不足的虚拟主机中对数据库里面储存的文章内容打标签-简单来说就是IO操作"><a href="#在一台主机内存严重不足的虚拟主机中对数据库里面储存的文章内容打标签-简单来说就是IO操作" class="headerlink" title="在一台主机内存严重不足的虚拟主机中对数据库里面储存的文章内容打标签(简单来说就是IO操作)"></a>在一台主机内存严重不足的虚拟主机中对数据库里面储存的文章内容打标签(简单来说就是IO操作)</h4><p>我是负责甄别内容是否涉及技术的，同时有一学姐负责分析文章内容具体属于的领域。</p>
+<p>一开始跑脚本，悲剧就开始了，woc根本跑不动啊。</p>
+<p>本地测试的时候一秒钟都能跑十来条。</p>
+<p>后来关了几台虚拟机还是没什么效果，机智的我就想到了先把库导出来，导入到本地机器的mysql中跑脚本，跑完之后再导回去。</p>
+<p><img src="/2018/03/07/mysql-in-out/pdd.jpg" alt=""></p>
+<p>然后主要矛盾终于被突出了，不管用navicate导出为什么格式的文件，再导入都会出错，20w数据能损失80%多…</p>
+<p>重复了几遍都不行，字段怎么都建立不对。</p>
+<p>后来突发奇想，用navicate连接本地机器的数据库，建立一个同名的数据库，直接图形界面用鼠标把服务器上的表拖过去</p>
+<p><img src="/2018/03/07/mysql-in-out/navicate.png" alt=""></p>
+<p><img src="/2018/03/07/mysql-in-out/navicate3.png" alt=""></p>
+<p>我滴妈呀，居然成功了…</p>
+<p><img src="/2018/03/07/mysql-in-out/navicate2.png" alt=""></p>
+<h4 id="总结：很多基本操作我都不知道，白踩那么多坑，哎，记录一下继续学习！"><a href="#总结：很多基本操作我都不知道，白踩那么多坑，哎，记录一下继续学习！" class="headerlink" title="总结：很多基本操作我都不知道，白踩那么多坑，哎，记录一下继续学习！"></a>总结：很多基本操作我都不知道，白踩那么多坑，哎，记录一下继续学习！</h4>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/03/07/mysql-in-out/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-PHP-parse-str" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     

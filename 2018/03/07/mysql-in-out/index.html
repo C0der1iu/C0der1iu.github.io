@@ -6,17 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://c0der1iu.github.io">
-  <title>Archives | C0d3r1iu&#39;s Blog</title>
+  <title>记录数据库导出导入神操作 | C0d3r1iu&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Keep Foolish">
-<meta property="og:type" content="website">
-<meta property="og:title" content="C0d3r1iu&#39;s Blog">
-<meta property="og:url" content="http://c0der1iu.github.io/archives/index.html">
+  <meta name="description" content="今儿实验室分配了一个艰巨的任务： 在一台主机内存严重不足的虚拟主机中对数据库里面储存的文章内容打标签(简单来说就是IO操作)我是负责甄别内容是否涉及技术的，同时有一学姐负责分析文章内容具体属于的领域。 一开始跑脚本，悲剧就开始了，woc根本跑不动啊。 本地测试的时候一秒钟都能跑十来条。 后来关了几台虚拟机还是没什么效果，机智的我就想到了先把库导出来，导入到本地机器的mysql中跑脚本，跑完之后再导">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记录数据库导出导入神操作">
+<meta property="og:url" content="http://c0der1iu.github.io/2018/03/07/mysql-in-out/index.html">
 <meta property="og:site_name" content="C0d3r1iu&#39;s Blog">
-<meta property="og:description" content="Keep Foolish">
+<meta property="og:description" content="今儿实验室分配了一个艰巨的任务： 在一台主机内存严重不足的虚拟主机中对数据库里面储存的文章内容打标签(简单来说就是IO操作)我是负责甄别内容是否涉及技术的，同时有一学姐负责分析文章内容具体属于的领域。 一开始跑脚本，悲剧就开始了，woc根本跑不动啊。 本地测试的时候一秒钟都能跑十来条。 后来关了几台虚拟机还是没什么效果，机智的我就想到了先把库导出来，导入到本地机器的mysql中跑脚本，跑完之后再导">
+<meta property="og:image" content="http://c0der1iu.github.io/2018/03/07/mysql-in-out/pdd.jpg">
+<meta property="og:image" content="http://c0der1iu.github.io/2018/03/07/mysql-in-out/navicate.png">
+<meta property="og:image" content="http://c0der1iu.github.io/2018/03/07/mysql-in-out/navicate3.png">
+<meta property="og:image" content="http://c0der1iu.github.io/2018/03/07/mysql-in-out/navicate2.png">
+<meta property="og:updated_time" content="2018-03-07T12:49:32.797Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="C0d3r1iu&#39;s Blog">
-<meta name="twitter:description" content="Keep Foolish">
+<meta name="twitter:title" content="记录数据库导出导入神操作">
+<meta name="twitter:description" content="今儿实验室分配了一个艰巨的任务： 在一台主机内存严重不足的虚拟主机中对数据库里面储存的文章内容打标签(简单来说就是IO操作)我是负责甄别内容是否涉及技术的，同时有一学姐负责分析文章内容具体属于的领域。 一开始跑脚本，悲剧就开始了，woc根本跑不动啊。 本地测试的时候一秒钟都能跑十来条。 后来关了几台虚拟机还是没什么效果，机智的我就想到了先把库导出来，导入到本地机器的mysql中跑脚本，跑完之后再导">
+<meta name="twitter:image" content="http://c0der1iu.github.io/2018/03/07/mysql-in-out/pdd.jpg">
   
   
     <link rel="icon" href="/faction/head.jpg">
@@ -144,314 +150,96 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-mysql-in-out" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      记录数据库导出导入神操作
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2018" class="archive-year">2018</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/07/mysql-in-out/" class="archive-article-date">
+
+        
+        <a href="/2018/03/07/mysql-in-out/" class="archive-article-date">
   	<time datetime="2018-03-07T12:02:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-07</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/07/mysql-in-out/">记录数据库导出导入神操作</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>今儿实验室分配了一个艰巨的任务：</p>
+<h4 id="在一台主机内存严重不足的虚拟主机中对数据库里面储存的文章内容打标签-简单来说就是IO操作"><a href="#在一台主机内存严重不足的虚拟主机中对数据库里面储存的文章内容打标签-简单来说就是IO操作" class="headerlink" title="在一台主机内存严重不足的虚拟主机中对数据库里面储存的文章内容打标签(简单来说就是IO操作)"></a>在一台主机内存严重不足的虚拟主机中对数据库里面储存的文章内容打标签(简单来说就是IO操作)</h4><p>我是负责甄别内容是否涉及技术的，同时有一学姐负责分析文章内容具体属于的领域。</p>
+<p>一开始跑脚本，悲剧就开始了，woc根本跑不动啊。</p>
+<p>本地测试的时候一秒钟都能跑十来条。</p>
+<p>后来关了几台虚拟机还是没什么效果，机智的我就想到了先把库导出来，导入到本地机器的mysql中跑脚本，跑完之后再导回去。</p>
+<p><img src="/2018/03/07/mysql-in-out/pdd.jpg" alt=""></p>
+<p>然后主要矛盾终于被突出了，不管用navicate导出为什么格式的文件，再导入都会出错，20w数据能损失80%多…</p>
+<p>重复了几遍都不行，字段怎么都建立不对。</p>
+<p>后来突发奇想，用navicate连接本地机器的数据库，建立一个同名的数据库，直接图形界面用鼠标把服务器上的表拖过去</p>
+<p><img src="/2018/03/07/mysql-in-out/navicate.png" alt=""></p>
+<p><img src="/2018/03/07/mysql-in-out/navicate3.png" alt=""></p>
+<p>我滴妈呀，居然成功了…</p>
+<p><img src="/2018/03/07/mysql-in-out/navicate2.png" alt=""></p>
+<h4 id="总结：很多基本操作我都不知道，白踩那么多坑，哎，记录一下继续学习！"><a href="#总结：很多基本操作我都不知道，白踩那么多坑，哎，记录一下继续学习！" class="headerlink" title="总结：很多基本操作我都不知道，白踩那么多坑，哎，记录一下继续学习！"></a>总结：很多基本操作我都不知道，白踩那么多坑，哎，记录一下继续学习！</h4>
+      
 
-        <div class="article-info info-on-right">
-          
-          
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/04/PHP-parse-str/" class="archive-article-date">
-  	<time datetime="2018-03-04T10:15:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-04</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2018/03/04/PHP-parse-str/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">PHP函数之parse_str()</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/04/PHP-parse-str/">PHP函数之parse_str()</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/03/02/cmseasy01/" class="archive-article-date">
-  	<time datetime="2018-03-02T09:04:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-02</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/03/02/cmseasy01/">初审cmseasy之 基本解混淆</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/02/28/neteast-jpg-react/" class="archive-article-date">
-  	<time datetime="2018-02-28T13:44:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-28</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/02/28/neteast-jpg-react/">网易图片解析为html漏洞复现</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">漏洞复现</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/02/15/HappyNewYear/" class="archive-article-date">
-  	<time datetime="2018-02-15T10:52:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/02/15/HappyNewYear/">HappyNewYear</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/01/26/Hello-Docker/" class="archive-article-date">
-  	<time datetime="2018-01-26T10:45:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-26</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/01/26/Hello-Docker/">Hello,Docker</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/01/26/sql-lab-begin/" class="archive-article-date">
-  	<time datetime="2018-01-26T09:33:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-26</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/01/26/sql-lab-begin/">sql-lab-begin</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/01/26/XSS-Explain-2/" class="archive-article-date">
-  	<time datetime="2018-01-26T05:22:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-26</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/01/26/XSS-Explain-2/">XSS-Explain-2</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/01/25/XSS-Explain-1/" class="archive-article-date">
-  	<time datetime="2018-01-25T05:29:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-25</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/01/25/XSS-Explain-1/">XSS跨站脚本攻击探讨总结</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">XSS 跨站脚本攻击</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2018/01/25/hello-world/" class="archive-article-date">
-  	<time datetime="2018-01-24T17:03:38.350Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-25</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2018/01/25/hello-world/">Hello World</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -476,8 +264,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
