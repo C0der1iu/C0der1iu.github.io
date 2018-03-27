@@ -146,6 +146,83 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-XSS-RPO" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/03/26/XSS-RPO/">XSS֮RPO����</a>
+    </h1>
+  
+
+        
+        <a href="/2018/03/26/XSS-RPO/" class="archive-article-date">
+  	<time datetime="2018-03-26T14:09:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-26</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="��o����һ��XSS��̽RPO����"><a href="#��o����һ��XSS��̽RPO����" class="headerlink" title="��ǿ����һ��XSS��̽RPO����"></a>��ǿ����һ��XSS��̽RPO����</h4><p>����ĩ�μ���ǿ����������ĿŰ��һ����Ϳ�����ն�������160+�������ճ�</p>
+<p>������һ��WEB XSS�����ĵ���RPO��֮ǰ��֪�����ڱ����в�����ѧϰ�ˣ��ڴ�����һ��</p>
+        
+          <a class="article-more-a" href="/2018/03/26/XSS-RPO/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">WEB��ȫ</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/03/26/XSS-RPO/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Mysql-Lock" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -726,89 +803,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2018/01/26/XSS-Explain-2/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-XSS-Explain-1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/01/25/XSS-Explain-1/">XSS跨站脚本攻击探讨总结</a>
-    </h1>
-  
-
-        
-        <a href="/2018/01/25/XSS-Explain-1/" class="archive-article-date">
-  	<time datetime="2018-01-25T05:29:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="XSS-跨站脚本攻击漏洞-个人整理"><a href="#XSS-跨站脚本攻击漏洞-个人整理" class="headerlink" title="XSS 跨站脚本攻击漏洞 个人整理"></a>XSS 跨站脚本攻击漏洞 个人整理</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">整体篇幅比较长，也算是我自己学习道路上的总结。</span><br><span class="line">大家捡有用的看吧，尽可能屎里捞金，还望多多支持我心血来潮的产物~</span><br></pre></td></tr></table></figure>
-<h3 id="一-攻击原理："><a href="#一-攻击原理：" class="headerlink" title="一.攻击原理："></a>一.攻击原理：</h3><p>设计网页时没有对用户输入内容进行有效的过滤，导致用户恶意输入的符号对现有html代码造成闭合，从而加载外部js代码对浏览者进行恶意攻击（获取cookie伪造登录，浏览器截屏，url跳转等等）</p>
-<p>比如网页有一功能：某标签内的value引用一个用户输入的值，然而用户使用 “ 闭合value后面的赋值，接着后面输入onload=”alert(1) 又与value原本的第二个” 相结合，构造出一段额外的弹窗代码</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;input <span class="attribute">name</span>=<span class="string">"xxx"</span> <span class="attribute">value</span>=<span class="string">" from_user_input "</span>/&gt;</span><br></pre></td></tr></table></figure>
-<p>当 用户输入” onfocus=”alert(1) 时变成了这样：<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;input <span class="attribute">name</span>=<span class="string">"xxx"</span> <span class="attribute">value</span>=<span class="string">""</span> <span class="attribute">onfocus</span>=<span class="string">"alert(1) "</span>/&gt;</span><br></pre></td></tr></table></figure></p>
-<p>value后面的值被双引号闭合，后面又构造出了一个on事件，从而执行攻击者自定义的操作</p>
-<p>总的来说XSS基本流程是： 攻击者输入-&gt;网页输出-&gt; 受害者打开网页浏览中招</p>
-<p><img src="/2018/01/25/XSS-Explain-1/xss.png" alt=""></p>
-        
-          <a class="article-more-a" href="/2018/01/25/XSS-Explain-1/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">XSS 跨站脚本攻击</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/01/25/XSS-Explain-1/">展开全文 >></a>
         </p>
       
 
