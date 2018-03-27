@@ -19,7 +19,7 @@
 <meta property="og:image" content="http://c0der1iu.github.io/2018/03/26/XSS-RPO/error.png">
 <meta property="og:image" content="http://c0der1iu.github.io/2018/03/26/XSS-RPO/rpo1.png">
 <meta property="og:image" content="http://c0der1iu.github.io/2018/03/26/XSS-RPO/rpo2.png">
-<meta property="og:updated_time" content="2018-03-27T01:58:45.656Z">
+<meta property="og:updated_time" content="2018-03-27T07:13:30.920Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="XSS之RPO攻击">
 <meta name="twitter:description" content="从强网杯一道XSS初探RPO攻击这周末参加了强网杯，被题目虐得一塌糊涂，最终队伍排名160+，尴尬收场 其中有一道WEB XSS考察的点是RPO，之前不知道，在比赛中查资料学习了，在此梳理一下">
@@ -171,11 +171,11 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h4 id="从强网杯一道XSS初探RPO攻击"><a href="#从强网杯一道XSS初探RPO攻击" class="headerlink" title="从强网杯一道XSS初探RPO攻击"></a>从强网杯一道XSS初探RPO攻击</h4><p>这周末参加了强网杯，被题目虐得一塌糊涂，最终队伍排名160+，尴尬收场</p>
+        <h3 id="从强网杯一道XSS初探RPO攻击"><a href="#从强网杯一道XSS初探RPO攻击" class="headerlink" title="从强网杯一道XSS初探RPO攻击"></a>从强网杯一道XSS初探RPO攻击</h3><p>这周末参加了强网杯，被题目虐得一塌糊涂，最终队伍排名160+，尴尬收场</p>
 <p>其中有一道WEB XSS考察的点是RPO，之前不知道，在比赛中查资料学习了，在此梳理一下</p>
 <a id="more"></a>
 <p>我试着用一句话尽可能描述的清楚：</p>
-<h4 id="RPO："><a href="#RPO：" class="headerlink" title="RPO："></a>RPO：</h4><p>浏览器和服务器之间接受url请求之后，由于对url编码解析结果不同，造成引用的资源路径可被伪造</p>
+<h3 id="RPO："><a href="#RPO：" class="headerlink" title="RPO："></a>RPO：</h3><p>浏览器和服务器之间接受url请求之后，由于对url编码解析结果不同，造成引用的资源路径可被伪造</p>
 <p>让我们先看看他们各自的职责：</p>
 <p>服务器：<br>    1.接受HTTP请求包<br>    2.根据url地址返回客户端请求的html以及资源文件</p>
 <p>浏览器：<br>    1.根据用户输入的url去请求资源以加载网页<br>    2.接收服务器返回的html和包含的资源，用规定好的方式把这些 “东西” 显示给用户</p>
@@ -205,8 +205,7 @@
 <p>服务器会认为这个链接请求的资源路径为：<code>/index.php/view/article/1071//../../</code>也就是/index.php/view/，并将<code>/index.php/view/</code>对应的页面返回给浏览器</p>
 <p>4.浏览器接收到/index.php/view/ 这个页面，在解析html代码时，以它的理解，<code>&lt;script src=../static/js/jquery.min.js</code><br>等同于 <code>/index.php/view/article/1071/%2f..%2f../../static/js/jquery.min.js</code></p>
 <p>而<code>/%2f..%2f../</code>被它认作一个目录，<code>/%2f..%2f../../</code> 之间相互抵消了</p>
-<p>因此会加载<code>/index.php/view/article/1071/static/js/jquery.min.js</code></p>
-<p>由于文件不存在，在/1071/之后的字符都当作PATHINFO传参处理了,至此我们成功的将 /1071/界面引入了<script>标签中，从而执行我们给定的代码</p>
+<p>因此会加载<code>/index.php/view/article/1071/static/js/jquery.min.js</code> 由于文件不存在，在/1071/之后的字符都当作PATHINFO传参处理了,至此我们成功的将 /1071/界面引入了<script>标签中，从而执行我们给定的代码</p>
 <p><img src="rpo3.png" alt=""></p>
 <p><img src="rpo4.png" alt=""></p>
 <h4 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h4><p>实际上web安全的面非常广，要学习的点点滴滴还很多，不能浅尝辄止，半途而废</p>
