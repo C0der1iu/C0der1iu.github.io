@@ -16,10 +16,10 @@
 <meta property="og:site_name" content="C0d3r1iu&#39;s Blog">
 <meta property="og:description" content="从强网杯一道XSS初探RPO攻击这周末参加了强网杯，被题目虐得一塌糊涂，最终队伍排名160+，尴尬收场 其中有一道WEB XSS考察的点是RPO，之前不知道，在比赛中查资料学习了，在此梳理一下">
 <meta property="og:image" content="http://c0der1iu.github.io/2018/03/26/XSS-RPO/error1.png">
-<meta property="og:image" content="http://c0der1iu.github.io/2018/03/26/XSS-RPO/erro.png">
+<meta property="og:image" content="http://c0der1iu.github.io/2018/03/26/XSS-RPO/error.png">
 <meta property="og:image" content="http://c0der1iu.github.io/2018/03/26/XSS-RPO/rpo1.png">
 <meta property="og:image" content="http://c0der1iu.github.io/2018/03/26/XSS-RPO/rpo2.png">
-<meta property="og:updated_time" content="2018-03-27T01:55:18.167Z">
+<meta property="og:updated_time" content="2018-03-27T01:57:16.256Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="XSS之RPO攻击">
 <meta name="twitter:description" content="从强网杯一道XSS初探RPO攻击这周末参加了强网杯，被题目虐得一塌糊涂，最终队伍排名160+，尴尬收场 其中有一道WEB XSS考察的点是RPO，之前不知道，在比赛中查资料学习了，在此梳理一下">
@@ -191,7 +191,7 @@
 <p>则会造成浏览器寻找资源路径从原本的<code>/static/css/style2.css</code> 变为 <code>/index.php/static/css/style2.css</code></p>
 <p>从而导致显示样式不正常</p>
 <p><img src="/2018/03/26/XSS-RPO/error1.png" alt=""></p>
-<p><img src="/2018/03/26/XSS-RPO/erro.png" alt=""></p>
+<p><img src="/2018/03/26/XSS-RPO/error.png" alt=""></p>
 <p>危害更大的点则是页面编码时嵌入了../这类不负责任的相对路径，这将提供XSS攻击利用条件</p>
 <p>正如这道CTF题目：</p>
 <p><img src="/2018/03/26/XSS-RPO/rpo1.png" alt=""></p>
@@ -200,28 +200,18 @@
 <p>这道题目就是这样，虽然可以输出任意字符到特定界面，但是被转义得没脾气</p>
 <p>我们不得不求助于rpo，利用其他页面的script标签来帮助我们执行js代码。</p>
 <p>我们要做的是：</p>
-<pre><code>1.写入js代码(为了防止转义这里需要eval(String.fromCharCode)或者以alert(1)作为演示)
-
-2.构造加载路径,在浏览器中访问： `/index.php/view/article/1071/%2f..%2f../`
-
-3.让服务器接收我们构造好的路径之后，解析返回存在上述代码的页面
-
-    服务器会认为这个链接请求的资源路径为：`/index.php/view/article/1071//../../ `也就是/index.php/view/，并将`/index.php/view/`对应的页面返回给浏览器
-
-4.浏览器接收到/index.php/view/ 这个页面，在解析html代码时，以它的理解，`&lt;script src=../static/js/jquery.min.js `
-等同于 `/index.php/view/article/1071/%2f..%2f../../static/js/jquery.min.js `
-
-而`/%2f..%2f../`被它认作一个目录，`/%2f..%2f../../` 之间相互抵消了
-
-因此会加载`/index.php/view/article/1071/static/js/jquery.min.js `
-
-由于文件不存在，在/1071/之后的字符都当作PATHINFO传参处理了,至此我们成功的将 /1071/界面引入了&lt;script&gt;标签中，从而执行我们给定的代码
-
-![](rpo3.png)
-![](rpo4.png)
-</code></pre><h4 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h4><p>实际上web安全的面非常广，要学习的点点滴滴还很多，不能浅尝辄止，半途而废</p>
+<p>1.写入js代码(为了防止转义这里需要eval(String.fromCharCode)或者以alert(1)作为演示)</p>
+<p>2.构造加载路径,在浏览器中访问： <code>/index.php/view/article/1071/%2f..%2f../</code></p>
+<p>3.让服务器接收我们构造好的路径之后，解析返回存在上述代码的页面</p>
+<p>服务器会认为这个链接请求的资源路径为：<code>/index.php/view/article/1071//../../</code>也就是/index.php/view/，并将<code>/index.php/view/</code>对应的页面返回给浏览器</p>
+<p>4.浏览器接收到/index.php/view/ 这个页面，在解析html代码时，以它的理解，<code>&lt;script src=../static/js/jquery.min.js</code><br>等同于 <code>/index.php/view/article/1071/%2f..%2f../../static/js/jquery.min.js</code></p>
+<p>而<code>/%2f..%2f../</code>被它认作一个目录，<code>/%2f..%2f../../</code> 之间相互抵消了</p>
+<p>因此会加载<code>/index.php/view/article/1071/static/js/jquery.min.js</code></p>
+<p>由于文件不存在，在/1071/之后的字符都当作PATHINFO传参处理了,至此我们成功的将 /1071/界面引入了<script>标签中，从而执行我们给定的代码</p>
+<p><img src="rpo3.png" alt=""><br><img src="rpo4.png" alt=""></p>
+<h4 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h4><p>实际上web安全的面非常广，要学习的点点滴滴还很多，不能浅尝辄止，半途而废</p>
 <h4 id="参考文章："><a href="#参考文章：" class="headerlink" title="参考文章："></a>参考文章：</h4><p><a href="&quot;http://blog.nsfocus.net/rpo-attack/&quot;">http://blog.nsfocus.net/rpo-attack/</a></p>
-
+</script></p>
       
 
       
