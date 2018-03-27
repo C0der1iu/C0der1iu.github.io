@@ -21,7 +21,7 @@
 <meta property="og:image" content="http://c0der1iu.github.io/2018/03/26/XSS-RPO/rpo2.png">
 <meta property="og:image" content="http://c0der1iu.github.io/2018/03/26/XSS-RPO/rpo33.png">
 <meta property="og:image" content="http://c0der1iu.github.io/2018/03/26/XSS-RPO/rpo44.png">
-<meta property="og:updated_time" content="2018-03-27T07:29:16.191Z">
+<meta property="og:updated_time" content="2018-03-27T07:33:26.689Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="XSS之RPO攻击">
 <meta name="twitter:description" content="从强网杯一道XSS初探RPO攻击这周末参加了强网杯，被题目虐得一塌糊涂，最终队伍排名160+，尴尬收场 其中有一道WEB XSS考察的点是RPO，之前不知道，在比赛中查资料学习了，在此梳理一下">
@@ -211,12 +211,12 @@
 <p>服务器会认为这个链接请求的资源路径为：<code>/index.php/view/article/1071//../../</code>也就是/index.php/view/，并将<code>/index.php/view/</code>对应的页面返回给浏览器</p>
 <p>4.浏览器接收到/index.php/view/ 这个页面，在解析html代码时，以它的理解，<code>&lt;script src=../static/js/jquery.min.js</code><br>等同于 <code>/index.php/view/article/1071/%2f..%2f../../static/js/jquery.min.js</code></p>
 <p>而<code>/%2f..%2f../</code>被它认作一个目录，<code>/%2f..%2f../../</code> 之间相互抵消了</p>
+<p>因此会加载<code>/index.php/view/article/1071/static/js/jquery.min.js</code> 由于文件不存在，在/1071/之后的字符都当作PATHINFO传参处理了,至此我们成功的将 /1071/界面引入了script标签中，从而执行我们给定的js代码</p>
 <p><img src="/2018/03/26/XSS-RPO/rpo33.png" alt=""></p>
 <p><img src="/2018/03/26/XSS-RPO/rpo44.png" alt=""></p>
-<p>因此会加载<code>/index.php/view/article/1071/static/js/jquery.min.js</code> 由于文件不存在，在/1071/之后的字符都当作PATHINFO传参处理了,至此我们成功的将 /1071/界面引入了<script>标签中，从而执行我们给定的js代码</p>
 <h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>实际上web安全的面非常广，要学习的点点滴滴还很多，不能浅尝辄止，半途而废</p>
-<h3 id="参考文章："><a href="#参考文章：" class="headerlink" title="参考文章："></a>参考文章：</h3><p><a href="http://blog.nsfocus.net/rpo-attack/">http://blog.nsfocus.net/rpo-attack/</a></p>
-</script></p>
+<h3 id="参考文章："><a href="#参考文章：" class="headerlink" title="参考文章："></a>参考文章：</h3><p><a href="&quot;http://blog.nsfocus.net/rpo-attack/&quot;">http://blog.nsfocus.net/rpo-attack/</a></p>
+
       
 
       
