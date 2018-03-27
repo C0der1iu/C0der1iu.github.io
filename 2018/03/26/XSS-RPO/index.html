@@ -19,7 +19,7 @@
 <meta property="og:image" content="http://c0der1iu.github.io/2018/03/26/XSS-RPO/error.png">
 <meta property="og:image" content="http://c0der1iu.github.io/2018/03/26/XSS-RPO/rpo1.png">
 <meta property="og:image" content="http://c0der1iu.github.io/2018/03/26/XSS-RPO/rpo2.png">
-<meta property="og:updated_time" content="2018-03-27T01:57:16.256Z">
+<meta property="og:updated_time" content="2018-03-27T01:58:45.656Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="XSS之RPO攻击">
 <meta name="twitter:description" content="从强网杯一道XSS初探RPO攻击这周末参加了强网杯，被题目虐得一塌糊涂，最终队伍排名160+，尴尬收场 其中有一道WEB XSS考察的点是RPO，之前不知道，在比赛中查资料学习了，在此梳理一下">
@@ -186,8 +186,7 @@
 <p>而浏览器则会认为这是一个目录，目录名叫/..%2f/</p>
 <p>正常访问/index.php 和 /index.php/test/ 返回的页面都是/index.php</p>
 <p>但如果这个页面有如下代码(没有加绝对路径):</p>
-<link rel="stylesheet" href="static/css/style2.css">
-
+<p><code>&lt;link rel=&quot;stylesheet&quot; href=&quot;static/css/style2.css&quot;&gt;</code></p>
 <p>则会造成浏览器寻找资源路径从原本的<code>/static/css/style2.css</code> 变为 <code>/index.php/static/css/style2.css</code></p>
 <p>从而导致显示样式不正常</p>
 <p><img src="/2018/03/26/XSS-RPO/error1.png" alt=""></p>
@@ -208,7 +207,8 @@
 <p>而<code>/%2f..%2f../</code>被它认作一个目录，<code>/%2f..%2f../../</code> 之间相互抵消了</p>
 <p>因此会加载<code>/index.php/view/article/1071/static/js/jquery.min.js</code></p>
 <p>由于文件不存在，在/1071/之后的字符都当作PATHINFO传参处理了,至此我们成功的将 /1071/界面引入了<script>标签中，从而执行我们给定的代码</p>
-<p><img src="rpo3.png" alt=""><br><img src="rpo4.png" alt=""></p>
+<p><img src="rpo3.png" alt=""></p>
+<p><img src="rpo4.png" alt=""></p>
 <h4 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h4><p>实际上web安全的面非常广，要学习的点点滴滴还很多，不能浅尝辄止，半途而废</p>
 <h4 id="参考文章："><a href="#参考文章：" class="headerlink" title="参考文章："></a>参考文章：</h4><p><a href="&quot;http://blog.nsfocus.net/rpo-attack/&quot;">http://blog.nsfocus.net/rpo-attack/</a></p>
 </script></p>
