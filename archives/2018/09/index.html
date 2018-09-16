@@ -6,26 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://c0der1iu.github.io">
-  <title>XSS之RPO攻击 | C0d3r1iu&#39;s Blog</title>
+  <title>Archives: 2018/9 | C0d3r1iu&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="从强网杯一道XSS初探RPO攻击这周末参加了强网杯，被题目虐得一塌糊涂，最终队伍排名160+，尴尬收场 其中有一道WEB XSS考察的点是RPO，之前不知道，在比赛中查资料学习了，在此梳理一下">
-<meta name="keywords" content="XSS">
-<meta property="og:type" content="article">
-<meta property="og:title" content="XSS之RPO攻击">
-<meta property="og:url" content="http://c0der1iu.github.io/2018/03/26/XSS-RPO/index.html">
+  <meta name="description" content="Keep Foolish">
+<meta property="og:type" content="website">
+<meta property="og:title" content="C0d3r1iu&#39;s Blog">
+<meta property="og:url" content="http://c0der1iu.github.io/archives/2018/09/index.html">
 <meta property="og:site_name" content="C0d3r1iu&#39;s Blog">
-<meta property="og:description" content="从强网杯一道XSS初探RPO攻击这周末参加了强网杯，被题目虐得一塌糊涂，最终队伍排名160+，尴尬收场 其中有一道WEB XSS考察的点是RPO，之前不知道，在比赛中查资料学习了，在此梳理一下">
-<meta property="og:image" content="http://c0der1iu.github.io/2018/03/26/XSS-RPO/error1.png">
-<meta property="og:image" content="http://c0der1iu.github.io/2018/03/26/XSS-RPO/error.png">
-<meta property="og:image" content="http://c0der1iu.github.io/2018/03/26/XSS-RPO/rpo1.png">
-<meta property="og:image" content="http://c0der1iu.github.io/2018/03/26/XSS-RPO/rpo2.png">
-<meta property="og:image" content="http://c0der1iu.github.io/2018/03/26/XSS-RPO/rpo33.png">
-<meta property="og:image" content="http://c0der1iu.github.io/2018/03/26/XSS-RPO/rpo44.png">
-<meta property="og:updated_time" content="2018-03-27T07:33:26.689Z">
+<meta property="og:description" content="Keep Foolish">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="XSS之RPO攻击">
-<meta name="twitter:description" content="从强网杯一道XSS初探RPO攻击这周末参加了强网杯，被题目虐得一塌糊涂，最终队伍排名160+，尴尬收场 其中有一道WEB XSS考察的点是RPO，之前不知道，在比赛中查资料学习了，在此梳理一下">
-<meta name="twitter:image" content="http://c0der1iu.github.io/2018/03/26/XSS-RPO/error1.png">
+<meta name="twitter:title" content="C0d3r1iu&#39;s Blog">
+<meta name="twitter:description" content="Keep Foolish">
   
   
     <link rel="icon" href="/faction/head.jpg">
@@ -153,146 +144,49 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-XSS-RPO" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      XSS之RPO攻击
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2018" class="archive-year">2018</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2018/09/16/Hack-Record/" class="archive-article-date">
+  	<time datetime="2018-09-16T07:50:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-16</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2018/09/16/Hack-Record/">渗透某福利网站的过程记录</a>
     </h1>
   
 
-        
-        <a href="/2018/03/26/XSS-RPO/" class="archive-article-date">
-  	<time datetime="2018-03-26T14:09:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-26</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="从强网杯一道XSS初探RPO攻击"><a href="#从强网杯一道XSS初探RPO攻击" class="headerlink" title="从强网杯一道XSS初探RPO攻击"></a>从强网杯一道XSS初探RPO攻击</h2><p>这周末参加了强网杯，被题目虐得一塌糊涂，最终队伍排名160+，尴尬收场</p>
-<p>其中有一道WEB XSS考察的点是RPO，之前不知道，在比赛中查资料学习了，在此梳理一下</p>
-<a id="more"></a>
-<p>我试着用一句话尽可能描述的清楚：</p>
-<h3 id="RPO："><a href="#RPO：" class="headerlink" title="RPO："></a>RPO：</h3><p>浏览器和服务器之间接受url请求之后，由于对url编码解析结果不同，造成引用的资源路径可被伪造</p>
-<p>让我们先看看他们各自的职责：</p>
-<p>服务器：</p>
-<pre><code>1.接受HTTP请求包
-2.根据url地址返回客户端请求的html以及资源文件
-</code></pre><p>浏览器：</p>
-<pre><code>1.根据用户输入的url去请求资源以加载网页
-2.接收服务器返回的html和包含的资源，用规定好的方式把这些 “东西” 显示给用户
-</code></pre><p>RPO攻击究竟利用点在哪里呢？</p>
-<p>就是/..%2f/在服务器和浏览器下的解析存在差异</p>
-<p>在服务器看来，这是被url编码过的字符串，应该先解码再解析地址</p>
-<p>于是就被解析成了/..// ,代表着回溯到上一个目录</p>
-<p>而浏览器则会认为这是一个目录，目录名叫/..%2f/</p>
-<p>正常访问/index.php 和 /index.php/test/ 返回的页面都是/index.php</p>
-<p>但如果这个页面有如下代码(没有加绝对路径):</p>
-<p><code>&lt;link rel=&quot;stylesheet&quot; href=&quot;static/css/style2.css&quot;&gt;</code></p>
-<p>则会造成浏览器寻找资源路径从原本的<code>/static/css/style2.css</code> 变为 <code>/index.php/static/css/style2.css</code></p>
-<p>从而导致显示样式不正常</p>
-<p><img src="/2018/03/26/XSS-RPO/error1.png" alt=""></p>
-<p><img src="/2018/03/26/XSS-RPO/error.png" alt=""></p>
-<p>危害更大的点则是页面编码时嵌入了../这类不负责任的相对路径，这将提供XSS攻击利用条件</p>
-<p>正如这道CTF题目：</p>
-<p><img src="/2018/03/26/XSS-RPO/rpo1.png" alt=""></p>
-<p>当我们在此页面相同目录下可控制输出的话，可以构造路径进行xss攻击</p>
-<p><img src="/2018/03/26/XSS-RPO/rpo2.png" alt=""></p>
-<p>这道题目就是这样，虽然可以输出任意字符到特定界面，但是被转义得没脾气</p>
-<p>我们不得不求助于rpo，利用其他页面的script标签来帮助我们执行js代码。</p>
-<p>我们要做的是：</p>
-<p>1.写入js代码(为了防止转义这里需要eval(String.fromCharCode)或者以alert(1)作为演示)</p>
-<p>2.构造加载路径,在浏览器中访问： <code>/index.php/view/article/1071/%2f..%2f../</code></p>
-<p>3.让服务器接收我们构造好的路径之后，解析返回存在上述代码的页面</p>
-<p>服务器会认为这个链接请求的资源路径为：<code>/index.php/view/article/1071//../../</code>也就是/index.php/view/，并将<code>/index.php/view/</code>对应的页面返回给浏览器</p>
-<p>4.浏览器接收到/index.php/view/ 这个页面，在解析html代码时，以它的理解，<code>&lt;script src=../static/js/jquery.min.js</code><br>等同于 <code>/index.php/view/article/1071/%2f..%2f../../static/js/jquery.min.js</code></p>
-<p>而<code>/%2f..%2f../</code>被它认作一个目录，<code>/%2f..%2f../../</code> 之间相互抵消了</p>
-<p>因此会加载<code>/index.php/view/article/1071/static/js/jquery.min.js</code> 由于文件不存在，在/1071/之后的字符都当作PATHINFO传参处理了,至此我们成功的将 /1071/界面引入了script标签中，从而执行我们给定的js代码</p>
-<p><img src="/2018/03/26/XSS-RPO/rpo33.png" alt=""></p>
-<p><img src="/2018/03/26/XSS-RPO/rpo44.png" alt=""></p>
-<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>实际上web安全的面非常广，要学习的点点滴滴还很多，不能浅尝辄止，半途而废</p>
-<h3 id="参考文章："><a href="#参考文章：" class="headerlink" title="参考文章："></a>参考文章：</h3><p><a href="&quot;http://blog.nsfocus.net/rpo-attack/&quot;">http://blog.nsfocus.net/rpo-attack/</a></p>
+        <div class="article-info info-on-right">
+          
+          
 
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">XSS</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
+        </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2018/09/16/Hack-Record/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          渗透某福利网站的过程记录
-        
-      </div>
-    </a>
   
   
-    <a href="/2018/03/21/Mysql-Lock/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Mysql_Lock</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-  
-  
+    </div></section>
   
 
-  
-
-  
-
-  
+    
 
 
           </div>
@@ -317,8 +211,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: true,
-		isArchive: false,
+		isPost: false,
+		isArchive: true,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
