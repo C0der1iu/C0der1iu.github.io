@@ -8,12 +8,12 @@
   <link rel="dns-prefetch" href="http://c0der1iu.github.io">
   <title>渗透某福利网站的过程记录 | C0d3r1iu&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="渗透某福利网站的过程记录Author:C0d3r1iu0x00 前言某天偶遇一个福利网站,在欣赏网站内容的同时对其进行了检测，最后以root的身份逛了逛他的vps，打包了整站。也算是为净化网络做了一点点贡献。 首页图片就不放了，过程中很多图当时都没截，还请大家将就一下 0x01 识破虚幻:对于我来说，渗透的本质是有效信息收集和利用(因为基本混不到最新的0day) 通过浏览器插件Wappalyzer">
+  <meta name="description" content="渗透某福利网站的过程记录Author:C0d3r1iu0x00 前言某天偶遇一个福利网站,在欣赏网站内容的同时对其进行了检测，最后以root的身份逛了逛他的vps，打包了整站。也算是为净化网络做了一点点贡献。 首页图片就不放了，过程中很多图当时都没截，还请大家将就一下">
 <meta property="og:type" content="article">
 <meta property="og:title" content="渗透某福利网站的过程记录">
 <meta property="og:url" content="http://c0der1iu.github.io/2018/09/16/Hack-Record/index.html">
 <meta property="og:site_name" content="C0d3r1iu&#39;s Blog">
-<meta property="og:description" content="渗透某福利网站的过程记录Author:C0d3r1iu0x00 前言某天偶遇一个福利网站,在欣赏网站内容的同时对其进行了检测，最后以root的身份逛了逛他的vps，打包了整站。也算是为净化网络做了一点点贡献。 首页图片就不放了，过程中很多图当时都没截，还请大家将就一下 0x01 识破虚幻:对于我来说，渗透的本质是有效信息收集和利用(因为基本混不到最新的0day) 通过浏览器插件Wappalyzer">
+<meta property="og:description" content="渗透某福利网站的过程记录Author:C0d3r1iu0x00 前言某天偶遇一个福利网站,在欣赏网站内容的同时对其进行了检测，最后以root的身份逛了逛他的vps，打包了整站。也算是为净化网络做了一点点贡献。 首页图片就不放了，过程中很多图当时都没截，还请大家将就一下">
 <meta property="og:image" content="http://c0der1iu.github.io/2018/09/16/Hack-Record/huanjing.png">
 <meta property="og:image" content="http://c0der1iu.github.io/2018/09/16/Hack-Record/inject.png">
 <meta property="og:image" content="http://c0der1iu.github.io/2018/09/16/Hack-Record/shujuku.png">
@@ -29,10 +29,10 @@
 <meta property="og:image" content="http://c0der1iu.github.io/2018/09/16/Hack-Record/users.png">
 <meta property="og:image" content="http://c0der1iu.github.io/2018/09/16/Hack-Record/infomation.png">
 <meta property="og:image" content="http://c0der1iu.github.io/2018/09/16/Hack-Record/edlm.png">
-<meta property="og:updated_time" content="2018-09-16T07:53:55.937Z">
+<meta property="og:updated_time" content="2018-09-16T08:06:05.993Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="渗透某福利网站的过程记录">
-<meta name="twitter:description" content="渗透某福利网站的过程记录Author:C0d3r1iu0x00 前言某天偶遇一个福利网站,在欣赏网站内容的同时对其进行了检测，最后以root的身份逛了逛他的vps，打包了整站。也算是为净化网络做了一点点贡献。 首页图片就不放了，过程中很多图当时都没截，还请大家将就一下 0x01 识破虚幻:对于我来说，渗透的本质是有效信息收集和利用(因为基本混不到最新的0day) 通过浏览器插件Wappalyzer">
+<meta name="twitter:description" content="渗透某福利网站的过程记录Author:C0d3r1iu0x00 前言某天偶遇一个福利网站,在欣赏网站内容的同时对其进行了检测，最后以root的身份逛了逛他的vps，打包了整站。也算是为净化网络做了一点点贡献。 首页图片就不放了，过程中很多图当时都没截，还请大家将就一下">
 <meta name="twitter:image" content="http://c0der1iu.github.io/2018/09/16/Hack-Record/huanjing.png">
   
   
@@ -183,6 +183,7 @@
       
         <h1 id="渗透某福利网站的过程记录"><a href="#渗透某福利网站的过程记录" class="headerlink" title="渗透某福利网站的过程记录"></a>渗透某福利网站的过程记录</h1><h4 id="Author-C0d3r1iu"><a href="#Author-C0d3r1iu" class="headerlink" title="Author:C0d3r1iu"></a>Author:C0d3r1iu</h4><h2 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h2><p>某天偶遇一个福利网站,在欣赏网站内容的同时对其进行了检测，最后以root的身份逛了逛他的vps，打包了整站。<br>也算是为净化网络做了一点点贡献。</p>
 <p>首页图片就不放了，过程中很多图当时都没截，还请大家将就一下</p>
+<a id="more"></a>
 <h2 id="0x01-识破虚幻"><a href="#0x01-识破虚幻" class="headerlink" title="0x01 识破虚幻:"></a>0x01 识破虚幻:</h2><p>对于我来说，渗透的本质是有效信息收集和利用(因为基本混不到最新的0day)</p>
 <p>通过浏览器插件Wappalyzer可以知道:</p>
 <pre><code>主站是用wordpress改的，主要运营模式是通过后台发布资源并且配合插件兜售邀请码
